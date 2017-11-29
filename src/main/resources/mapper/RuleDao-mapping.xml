@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szl.dao.RuleDao">
+
+    <resultMap id="RuleMap" type="Rule">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="zhuzheng" column="zhuzheng"/>
+        <result property="cizheng" column="cizheng"/>
+        <result property="zhushezhi" column="zhushezhi"/>
+        <result property="cishezhi" column="cishezhi"/>
+        <result property="zhushetai" column="zhushetai"/>
+        <result property="cishetai" column="cishetai"/>
+        <result property="zhumai" column="zhumai"/>
+        <result property="cimai" column="cimai"/>
+    </resultMap>
+
+    <select id="selectRuleById" resultType="Rule">
+        select * from Rule where id = #{id}
+    </select>
+
+    <select id="selectRuleByName" resultType="Rule">
+        select * from Rule where name = #{name}
+    </select>
+
+
+    <select id="selectAllRules" resultMap="RuleMap">
+        select * from Rule
+    </select>
+
+    <!--加上id，否则自动增加id-->
+    <insert id="insertRule" parameterType="Rule" useGeneratedKeys="true" keyProperty="id">
+        insert into Rule(name, zhuzheng, cizheng, zhushezhi, cishezhi, zhushetai, cishetai, zhumai, cimai)
+        values(#{name},#{zhuzheng},#{cizheng},#{zhushezhi},#{cishezhi},#{zhushetai},#{cishetai},#{zhumai},#{cimai})
+    </insert>
+
+    <insert id="insertAllRule" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into Rule(name, zhuzheng, cizheng, zhushezhi, cishezhi, zhushetai, cishetai, zhumai,cimai) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.name},#{item.zhuzheng},#{item.cizheng},#{item.zhushezhi},#{item.cishezhi},#{item.zhushetai},#{item.cishetai},#{item.zhumai},#{item.cimai})
+        </foreach>
+    </insert>
+
+    <update id="updateRule" parameterType="Rule">
+        update Rule set name=#{name},zhuzheng=#{zhuzheng},cizheng=#{cizheng},zhushezhi=#{zhushezhi},cishezhi=#{cishezhi},zhushetai=#{zhushetai},
+        cishetai=#{cishetai},zhumai=#{zhumai},cimai=#{cimai} where id=#{id};
+    </update>
+
+    <delete id="deleteRule" parameterType="int">
+        delete from Rule where id = #{id}
+    </delete>
+</mapper>

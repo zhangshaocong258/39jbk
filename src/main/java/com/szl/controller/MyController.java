@@ -1,13 +1,13 @@
 package com.szl.controller;
 
+import com.szl.domain.User;
 import com.szl.util.CookieUtil;
 import com.szl.service.MyService;
+import com.szl.util.DiseaseInf;
 import com.szl.util.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -30,12 +30,107 @@ import java.util.List;
 public class MyController {
     private static String modelOutPath = "/model/xinglinyuan.model";
     private static String dataInPath = "/model/train.arff";
+    public static final String loginSession = "loginSession";
 
     @Autowired
     private MyService myService;
 
-    @RequestMapping("/")
-    public String info() {
+
+    @RequestMapping("/discase")
+    public ModelAndView discase(HttpServletRequest request) {
+        List<User> userList = myService.selectAllUser();
+        ModelAndView mav = new ModelAndView("discase");
+        mav.addObject("discases", userList);
+        return mav;
+    }
+
+
+    /**
+     * 修改后用于重定向，隐藏id，以便修改
+     * @param request
+     * @param id
+     * @param name
+     * @param act
+     * @return
+     */
+    @RequestMapping("/handler")
+    public String handler(HttpServletRequest request,@RequestParam("id") int id, @RequestParam("name") String name,
+                          @RequestParam("act") String act) {
+        if (act.equals("edit")) {
+            User user = myService.selectUserById(id);
+            user.setUserName(name);
+            myService.updateUser(user);
+        } else if (act.equals("del")) {
+            myService.deleteUserByName(name);
+        }
+        return "redirect:/discase";
+    }
+
+    /**
+     * 判断权限
+     * @param request
+     * @return
+     */
+    @RequestMapping("/message")
+    public ModelAndView message(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute(loginSession);
+        ModelAndView mav = new ModelAndView("message");
+        mav.addObject("user", user);
+        if (user.getUserName().equals("admin")) {
+            mav.addObject("privilege", "admin");
+        } else {
+            mav.addObject("privilege", "user");
+        }
+        return mav;
+    }
+
+
+    @RequestMapping("/exit")
+    public String exit(HttpServletRequest request) {
+        request.getSession().removeAttribute(loginSession);
+        return "login";
+    }
+
+    @RequestMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @RequestMapping("/register")
+    public String register() {
+        return "register";
+    }
+
+    /**
+     * 用于判断用户名是否存在
+     * @param username
+     * @param password
+     * @param confirmPassword
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/registerTest")
+    public String registerTest(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("confirmPassword") String confirmPassword) {
+        return myService.register(username, password, confirmPassword);
+    }
+
+    @ResponseBody
+    @RequestMapping("/loginTest")
+    public String loginTest(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("password") String password) {
+        User user = myService.login(username, password);
+        if (user != null) {
+            request.getSession().setAttribute(loginSession, user);
+            return "true";
+        }
+        return "false";
+    }
+
+    @RequestMapping("/information")
+    public String info(HttpServletRequest request) {
+        if (request.getSession().getAttribute(loginSession) == null) {
+            System.out.println("未登录");
+            return "403";
+        }
         return "information";
     }
 
@@ -50,6 +145,10 @@ public class MyController {
                                   @RequestParam(value = "gender") String gender,
                                   @RequestParam(value = "age") String age,
                                   @RequestParam(value = "profession") String profession) {
+        if (request.getSession().getAttribute(loginSession) == null) {
+            System.out.println("未登录");
+            return new ModelAndView("403");
+        }
         ModelAndView mav = new ModelAndView("select");
         mav.addObject("gender", gender);
         mav.addObject("age", age);
@@ -67,14 +166,15 @@ public class MyController {
                                @RequestParam(value = "shezhi") String[] shezhi,
                                @RequestParam(value = "shetai") String[] shetai,
                                @RequestParam(value = "mai") String[] mai) {
+        if (request.getSession().getAttribute(loginSession) == null) {
+            System.out.println("未登录");
+            return new ModelAndView("403");
+        }
         ModelAndView mav = new ModelAndView("result");
         mav.addObject("gender", gender);
         mav.addObject("age", age);
         mav.addObject("profession", profession);
-        mav.addObject("zhengzhuang", zhengzhuang);
-        mav.addObject("shezhi", shezhi);
-        mav.addObject("shetai", shetai);
-        mav.addObject("mai", mai);
+        List<DiseaseInf> results = new ArrayList<DiseaseInf>();
 //        for (String str : zhengzhuang) {
 //            System.out.println("zhengzhuang " + str);
 //        }
@@ -96,13 +196,19 @@ public class MyController {
             File trainFile = new File(MyController.class.getClassLoader().getResource("../../model/train.arff").getPath());
             File tempFile = new File(MyController.class.getClassLoader().getResource("../../model/temp.arff").getPath());
             File formatFile = new File(MyController.class.getClassLoader().getResource("../../model/format.arff").getPath());
-            System.out.println("modelFile " + modelFile.getAbsolutePath());
-            System.out.println("trainFile " + trainFile.getAbsolutePath());
-            System.out.println("tempFile " + tempFile.getAbsolutePath());
-            System.out.println("formatFile " + formatFile.getAbsolutePath());
+//            System.out.println("modelFile " + modelFile.getAbsolutePath());
+//            System.out.println("trainFile " + trainFile.getAbsolutePath());
+//            System.out.println("tempFile " + tempFile.getAbsolutePath());
+//            System.out.println("formatFile " + formatFile.getAbsolutePath());
 
             Repository.train(modelFile, trainFile, false);
-            Repository.predict(modelFile,tempFile,formatFile,zhengzhuangList, shezhiList, shetaiList, maiList);
+            results = Repository.predict(modelFile,tempFile,formatFile,zhengzhuangList, shezhiList, shetaiList, maiList);
+            mav.addObject("results", results);
+            mav.addObject("existZhengzhuangs", zhengzhuangList);
+            mav.addObject("shezhis", shezhiList);
+            mav.addObject("shetais", shetaiList);
+            mav.addObject("mais", maiList);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -154,36 +260,4 @@ public class MyController {
         return "redirect:/search";
     }
 
-    @RequestMapping("/nav1")
-    public String nav1(HttpServletRequest request, HttpServletResponse response, RedirectAttributes attributes, @RequestParam(value = "q") String questionStr) {
-//        Cookie[] cookies = request.getCookies();
-//        if (cookies == null) {
-//            System.out.println("没有cookie==============");
-//        } else {
-//            for (Cookie cookie : cookies) {
-//                if (cookie.getName().equals("zscNav")) {
-//                    System.out.println("原值为:" + cookie.getValue());
-//                    cookie.setValue("1");
-////                    cookie.setPath("/");
-//                    cookie.setMaxAge(60);// 设置为60min
-//                    response.addCookie(cookie);
-//                    break;
-//                }
-//            }
-//        }
-        if (CookieUtil.getCookie(request, "zscNav") == null) {
-            Cookie cookie = new Cookie("zscNav", "1");
-            cookie.setMaxAge(60);
-            response.addCookie(cookie);
-        } else {
-            Cookie cookie = CookieUtil.getCookie(request, "zscNav");
-            cookie.setValue("1");
-            cookie.setMaxAge(60);
-            response.addCookie(cookie);
-        }
-        attributes.addAttribute("type", "question");
-        attributes.addAttribute("q", questionStr);
-        attributes.addAttribute("redirect", "1");
-        return "redirect:/search";
-    }
 }

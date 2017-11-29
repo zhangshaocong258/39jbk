@@ -2,12 +2,14 @@ package com.szl.service;
 
 import com.szl.domain.Rule;
 import com.szl.dao.*;
+import com.szl.domain.User;
 import com.szl.util.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
+import java.util.List;
 
 /**
  * Created by zsc on 2017/1/18.
@@ -16,26 +18,15 @@ import java.io.File;
  * 然后通过查询fQuestionsMap得到最终的url信息，可以将rQuestionsMap和fQuestionsMap整合，节省空间
  */
 @Service
-public class MyService implements ServiceInterface {
-    private static final String synonymDicPath = "同义词new.txt";
-
-//    private List<Forward> fQuestions;
-//    private List<Reverse> rQuestions;
-//    private Map<String, Reverse> rQuestionsMap = new HashMap<String, Reverse>();
-//    private Map<String, Forward> fQuestionsMap = new HashMap<String, Forward>();
-//
-//    private List<Forward> fPeoples;
-//    private List<Reverse> rPeoples;
-//    private Map<String, Reverse> rPeoplesMap = new HashMap<String, Reverse>();
-//    private Map<String, Forward> fPeoplesMap = new HashMap<String, Forward>();
-//
-//    private List<Forward> fTopics;
-//    private List<Reverse> rTopics;
-//    private Map<String, Reverse> rTopicsMap = new HashMap<String, Reverse>();
-//    private Map<String, Forward> fTopicsMap = new HashMap<String, Forward>();
+public class MyService implements ServiceInterface{
 
     @Autowired
     private RuleDao ruleDao;
+
+    @Autowired
+    private UserDao userDao;
+
+
 
 
 
@@ -52,11 +43,57 @@ public class MyService implements ServiceInterface {
 
     }
 
+    public User login(String username, String password) {
+//        System.out.println("输入的账号:" + username + "输入的密码:" + password);
+        //对输入账号进行查询,取出数据库中保存对信息
+        User user = userDao.selectUserByName(username);
+        if (user != null) {
+            System.out.println("查询出来的账号:" + user.getUserName() + " 密码:" + user.getUserPassword());
+            if (user.getUserName().equals(username) && user.getUserPassword().equals(password))
+                return user;
+        }
+        return user;
+    }
+
+    public String register(String username, String password, String confirmPassword) {
+//        System.out.println("输入的账号:" + username + "输入的密码:" + password);
+        //对输入账号进行查询,取出数据库中保存对信息
+        if (userDao.selectUserByName(username) == null) {
+            if (password.equals(confirmPassword)) {
+                User user = new User();
+                user.setUserName(username);
+                user.setUserPassword(password);
+                userDao.insertUser(user);
+                return "ok";
+            } else {
+                return "error2";
+            }
+        } else {
+            return "error1";
+        }
+
+    }
 
 
-//    private List<Forward> getFQuestions() {
-//        return questionForwardDao.selectAll();
-//    }
+    public User selectUserById(Integer userId) {
+        return userDao.selectUserById(userId);
+    }
+
+    public User selectUserByName(String name) {
+        return userDao.selectUserByName(name);
+    }
+
+    public void updateUser(User user) {
+        userDao.updateUser(user);
+    }
+
+    public void deleteUserByName(String userName) {
+        userDao.deleteUserByName(userName);
+    }
+
+    public List<User> selectAllUser() {
+        return userDao.selectAllUsers();
+    }
 
     public Rule selectByName(String name) {
         return ruleDao.selectRuleByName(name);
