@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html class="login-alone">
 <head>
-    <title>登录</title>
+    <title>注册</title>
     <link rel="shortcut icon" type="image/x-icon" href="static/res/homepage/favicon.ico"/>
     <link href="static/res/ui/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="static/res/ui/css/base.css">
@@ -16,12 +16,14 @@
     <script type="text/javascript" src="static/js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript">
         function doLogin() {
-            $.post("loginTest", $("#loginForm").serialize(), function (data) {
-                if (data == "true") {
-//                    alert("登录成功!");
-                    location = "information";
+            $.post("registerTest", $("#registerForm").serialize(), function (data) {
+                if (data == "ok") {
+                    alert("注册成功!");
+                    location = "login";
+                } else if (data == "error1"){
+                    alert("用户名已存在");
                 } else {
-                    alert("账号或密码错误");
+                    alert("前后密码不一致");
                 }
             });
         }
@@ -32,7 +34,7 @@
 <div class="logina-logo" style="height: 55px">
     <img src="static/res/passport/images/toplogo.png" alt="标题">
 </div>
-<form action="" method="post" id="loginForm">
+<form action="" method="post" id="registerForm">
     <div class="logina-main main clearfix">
         <div class="tab-con">
             <form id="form-login" method="post" action="passport/ajax-login">
@@ -55,19 +57,17 @@
                         <td>
                         </td>
                     </tr>
-                    <tr class="find">
-                        <th></th>
-                        <td>
-                            <div>
-                                <%--<label class="checkbox" for="chk11"><input style="height: auto;" id="chk11" type="checkbox" name="remember_me" >记住我</label>--%>
-                                <%--<a href="passport/forget-pwd">忘记密码？</a>--%>
-                            </div>
+                    <tr>
+                        <th>确认密码</th>
+                        <td width="245">
+                            <input id="confirmPassword" type="password" name="confirmPassword" placeholder="请输入密码" autocomplete="off">
                         </td>
-                        <td></td>
+                        <td>
+                        </td>
                     </tr>
                     <tr>
                         <th></th>
-                        <td width="245"><input class="confirm" type="button" value="登  录" onclick="doLogin()"></td>
+                        <td width="245"><input class="confirm" type="button" value="立 即 注 册" onclick="doLogin()"></td>
                         <td></td>
                     </tr>
                     </tbody>
@@ -75,8 +75,8 @@
             </form>
         </div>
         <div class="reg">
-            <p>还没有账号？<br>赶快免费注册一个吧！</p>
-            <a class="reg-btn" href="register">立即免费注册</a>
+            <p>已有账号？<br>赶快登录吧！</p>
+            <a class="reg-btn" href="login">立即登录</a>
         </div>
     </div>
 </form>

@@ -7,7 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <c:set var="user" value="${sessionScope.loginSession}"/>
 
 <html>
@@ -170,12 +169,14 @@
             <button class="btn btn-primary" type="submit">下一步</button>
         </div>
 
-        <div class="dropdown" style="position:absolute;left:1400px;top:75px">
+        <div class="dropdown" style="position:absolute;left:1380px;top:80px">
             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="true">${user.userName}<span class="caret"></span></button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li><a href="message">个人资料</a></li>
-                <li><a href="exit">退出</a></li>
+                <li><a href="message"><span class="glyphicon glyphicon-user"
+                                            aria-hidden="true"/>&thinsp;个人资料</a></li>
+                <li><a href="exit"><span class="glyphicon glyphicon-log-out"
+                                         aria-hidden="true"/>&thinsp;退出</a></li>
             </ul>
         </div>
 
