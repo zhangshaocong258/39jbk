@@ -1,5 +1,6 @@
 package com.szl.controller;
 
+import com.szl.domain.Discase;
 import com.szl.domain.User;
 import com.szl.util.CookieUtil;
 import com.szl.service.MyService;
@@ -36,32 +37,84 @@ public class MyController {
     private MyService myService;
 
 
+    @ResponseBody
+    @RequestMapping("/selectTest")
+    public String  selectTest( @RequestParam(value = "gender") String gender,
+                               @RequestParam(value = "age") String age,
+                               @RequestParam(value = "profession") String profession,
+                               @RequestParam(value = "zhengzhuang") String[] zhengzhuang,
+                               @RequestParam(value = "shezhi") String[] shezhi,
+                               @RequestParam(value = "shetai") String[] shetai,
+                               @RequestParam(value = "mai") String[] mai) {
+        System.out.println("进入ssssss" + zhengzhuang.length);
+        if (zhengzhuang.length == 0) {
+            return "zhengzhuang";
+        } else if (shezhi.length == 0) {
+            return "shezhi";
+        } else if (shetai.length == 0) {
+            return "shetai";
+        } else if (mai.length == 0) {
+            return "mai";
+        } else {
+            return "true";
+        }
+    }
+
+
+    /**
+     * 必须要有@ResponseBody
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/train")
+    public String train() {
+        try {
+            List<Discase> discaseList = myService.selectAllDiscase();
+            File modelFile = new File(MyController.class.getClassLoader().getResource("../../model/xinglinyuan.model").getPath());
+            File trainFile = new File(MyController.class.getClassLoader().getResource("../../model/train.arff").getPath());
+            File formatFile = new File(MyController.class.getClassLoader().getResource("../../model/format.arff").getPath());
+            Repository.train(modelFile, trainFile, formatFile, discaseList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "true";
+    }
+
+
     @RequestMapping("/discase")
     public ModelAndView discase(HttpServletRequest request) {
-        List<User> userList = myService.selectAllUser();
+        List<Discase> discaseList = myService.selectAllDiscase();
         ModelAndView mav = new ModelAndView("discase");
-        mav.addObject("discases", userList);
+        mav.addObject("discases", discaseList);
         return mav;
     }
 
 
     /**
+     * 进行修改或者删除
      * 修改后用于重定向，隐藏id，以便修改
      * @param request
      * @param id
-     * @param name
      * @param act
      * @return
      */
     @RequestMapping("/handler")
-    public String handler(HttpServletRequest request,@RequestParam("id") int id, @RequestParam("name") String name,
+    public String handler(HttpServletRequest request,
+                          @RequestParam("id") int id,
+                          @RequestParam("info") String info,
+                          @RequestParam("medicalHis") String medicalHis,
+                          @RequestParam("examine") String examine,
+                          @RequestParam("disease") String disease,
                           @RequestParam("act") String act) {
         if (act.equals("edit")) {
-            User user = myService.selectUserById(id);
-            user.setUserName(name);
-            myService.updateUser(user);
+            Discase discase = myService.selectDiscaseById(id);
+            discase.setInfo(info);
+            discase.setMedicalHis(medicalHis);
+            discase.setExamine(examine);
+            discase.setDisease(disease);
+            myService.updateDiscase(discase);
         } else if (act.equals("del")) {
-            myService.deleteUserByName(name);
+            myService.deleteDiscaseById(id);
         }
         return "redirect:/discase";
     }
@@ -193,7 +246,6 @@ public class MyController {
             List<String> shetaiList = Arrays.asList(shetai);
             List<String> maiList = Arrays.asList(mai);
             File modelFile = new File(MyController.class.getClassLoader().getResource("../../model/xinglinyuan.model").getPath());
-            File trainFile = new File(MyController.class.getClassLoader().getResource("../../model/train.arff").getPath());
             File tempFile = new File(MyController.class.getClassLoader().getResource("../../model/temp.arff").getPath());
             File formatFile = new File(MyController.class.getClassLoader().getResource("../../model/format.arff").getPath());
 //            System.out.println("modelFile " + modelFile.getAbsolutePath());
@@ -201,7 +253,7 @@ public class MyController {
 //            System.out.println("tempFile " + tempFile.getAbsolutePath());
 //            System.out.println("formatFile " + formatFile.getAbsolutePath());
 
-            Repository.train(modelFile, trainFile, false);
+//            Repository.train(modelFile, trainFile, false);
             results = Repository.predict(modelFile,tempFile,formatFile,zhengzhuangList, shezhiList, shetaiList, maiList);
             mav.addObject("results", results);
             mav.addObject("existZhengzhuangs", zhengzhuangList);

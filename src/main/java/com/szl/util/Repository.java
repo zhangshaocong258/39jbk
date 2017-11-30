@@ -3,6 +3,7 @@ package com.szl.util;
 import com.hankcs.hanlp.HanLP;
 import com.hankcs.hanlp.seg.common.Term;
 import com.szl.dao.RuleDao;
+import com.szl.domain.Discase;
 import com.szl.domain.Rule;
 import com.szl.service.MyService;
 import tree.domain.Forest;
@@ -107,9 +108,9 @@ public class Repository {
         }
     }
 
-    private static void readForest(String maishePath) throws Exception {
+    public static void readForest(File file) throws Exception {
         forest = Library.makeForest(new BufferedReader(new InputStreamReader(
-                new FileInputStream(new File(maishePath)), "UTF-8")));
+                new FileInputStream(file), "UTF-8")));
     }
 
     public static void genRepository(RuleDao ruleDao) {
@@ -659,14 +660,59 @@ public class Repository {
         return sb.toString();
     }
 
-    public static void train(File modelFile, File trainFile, boolean reset) throws Exception{
-        if (modelFile.exists()) {
-            if (!reset) {
-                System.out.println("不用训练");
-                return;
-            }
+    public static void train(File modelFile, File trainFile, File formatFile, List<Discase> discaseList) throws Exception{
+        System.out.println("训练 " + discaseList.size());
+        //重写train.arff
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(formatFile), "UTF-8"));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(trainFile), "UTF-8"));
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("心气虚", "x");
+        hashMap.put("肝肾阴虚", "g");
+        hashMap.put("脾胃虚弱", "p");
+        String line;
+        while ((line = br.readLine()) != null) {
+            bw.write(line);
+            bw.newLine();
         }
-        System.out.println("训练");
+        for (Discase discase : discaseList) {
+            List<String> zhengzhuangList;
+            List<String> shezhiList;
+            List<String> shetaiList;
+            List<String> maiList;
+            String medicalHis = discase.getMedicalHis().split(":")[1].trim();
+            String examine = discase.getExamine().split(":")[1].trim();
+            String sheZhi = "";
+            String sheTai = "";
+            String maiXiang = "";
+            String[] strings = examine.split(",|，|。|、|;|；");
+            for (int i = 0; i < strings.length; i++) {
+                if (strings[i].startsWith("舌质") || strings[i].startsWith("质")) {
+                    sheZhi = strings[i];
+                } else if (strings[i].startsWith("舌苔") || strings[i].startsWith("苔")) {
+                    sheTai = strings[i];
+                } else if (strings[i].startsWith("脉")) {
+                    maiXiang = strings[i];
+                }
+            }
+            String segExamine = new StringBuilder().append(getSymptom(HanLP.segment(medicalHis)).toString()).
+                    append(getSymptom(HanLP.segment(examine)).toString()).toString();
+            String segSheZhi = getSegResult(forest, sheZhi);
+            String segSheTai = getSegResult(forest, sheTai);
+            String segMaiXiang = getSegResult(forest, maiXiang);
+            zhengzhuangList = Arrays.asList(segExamine.split(","));
+            shezhiList = Arrays.asList(segSheZhi.split(","));
+            shetaiList = Arrays.asList(segSheTai.split(","));
+            maiList = Arrays.asList(segMaiXiang.split(","));
+            List<String> list = matchRule(zhengzhuangList, shezhiList, shetaiList, maiList);
+            for (String str : list) {
+                bw.write(str);
+                bw.write(",");
+            }
+            bw.write(hashMap.get(discase.getDisease().split(":")[1].trim()));
+            bw.newLine();
+        }
+        bw.close();
+
         ObjectOutputStream oos = new ObjectOutputStream (new FileOutputStream(modelFile));
         ArffLoader arffLoader = new ArffLoader();
         arffLoader.setFile(trainFile);
@@ -678,7 +724,7 @@ public class Repository {
         oos.close();
     }
 
-    public static void predict(File modelFile, File tempFile ,File formatFile ,List<String> zhengzhuangList, List<String> shezhiList, List<String> shetaiList, List<String> maiList) throws Exception {
+    public static List<DiseaseInf> predict(File modelFile, File tempFile ,File formatFile ,List<String> zhengzhuangList, List<String> shezhiList, List<String> shetaiList, List<String> maiList) throws Exception {
         //生成特征
         List<String> list = Repository.matchRule(zhengzhuangList, shezhiList, shetaiList, maiList);
         System.out.println("list " + list.toString());
@@ -707,11 +753,13 @@ public class Repository {
         Instances instancesTest = arffLoader.getDataSet();
         instancesTest.setClassIndex(instancesTest.numAttributes() - 1);
         double[] probability = classifier.distributionForInstance(instancesTest.instance(0));
-        List<String> pro = new ArrayList<String>();
-        for (int i = 0; i < probability.length; i++) {
-            pro.add(df.format(probability[i]));
-        }
-        System.out.println("pro " + pro);
+        List<DiseaseInf> result = new ArrayList<DiseaseInf>();
+        result.add(new DiseaseInf("心气虚证","本证是因为禀赋不足，或年高脏气衰弱，或久病失养，或劳倦内伤，以及各种损伤气血的原因致心气不足，以心悸为主要的表现证候。",df.format(probability[0])));
+        result.add(new DiseaseInf("肝肾阴虚证","本证是由情志内伤，劳伤精血，或因久病不愈，房事不节耗伤肝肾之阴，以致阴液亏虚，虚阳亢动所表现的证候。",df.format(probability[1])));
+        result.add(new DiseaseInf("脾胃虚弱证","本证是由于饮食失调，或思虑过度，或劳倦，或外邪着里，或脏腑传变，内伤脾气；或先天禀赋不足，体素虚弱，而致脾气虚弱，健运失司所表现的证候。",df.format(probability[2])));
+        Collections.sort(result);
+        return result;
+
     }
 
 

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szl.dao.DiscaseDao">
+
+    <resultMap id="DiscaseMap" type="Discase">
+        <id property="id" column="id" />
+        <result property="info" column="info" />
+        <result property="medicalHis" column="medicalHis" />
+        <result property="examine" column="examine" />
+        <result property="disease" column="disease" />
+    </resultMap>
+
+    <select id="selectDiscaseById" resultType="Discase" >
+        select * from Discase where id = #{id}
+    </select>
+
+
+    <select id="selectAllDiscases" resultMap="DiscaseMap" >
+        select * from Discase
+    </select>
+
+    <!--加上id，否则自动增加id-->
+    <insert id="insertDiscase" parameterType="Discase" useGeneratedKeys="true" keyProperty="id">
+        insert into Discase(info,medicalHis,examine,disease)
+        values(#{info},#{medicalHis},#{examine},#{disease})
+    </insert>
+
+    <insert id="insertAllDiscase" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into Discase(info,medicalHis,examine,disease) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.info},#{item.medicalHis},#{item.examine},#{item.disease})
+        </foreach>
+    </insert>
+
+    <update id="updateDiscase" parameterType="Discase" >
+        update Discase set info=#{info},medicalHis=#{medicalHis},examine=#{examine},disease=#{disease} where id=#{id}
+    </update>
+
+    <delete id="deleteDiscase" parameterType="int">
+        delete from Discase where id = #{id}
+    </delete>
+</mapper>

@@ -1,5 +1,6 @@
 package com.szl.service;
 
+import com.szl.domain.Discase;
 import com.szl.domain.Rule;
 import com.szl.dao.*;
 import com.szl.domain.User;
@@ -18,7 +19,7 @@ import java.util.List;
  * 然后通过查询fQuestionsMap得到最终的url信息，可以将rQuestionsMap和fQuestionsMap整合，节省空间
  */
 @Service
-public class MyService implements ServiceInterface{
+public class MyService implements ServiceInterface {
 
     @Autowired
     private RuleDao ruleDao;
@@ -26,16 +27,18 @@ public class MyService implements ServiceInterface{
     @Autowired
     private UserDao userDao;
 
-
-
+    @Autowired
+    private DiscaseDao discaseDao;
 
 
     @PostConstruct
     public void init() {
         System.out.println("@PostConstruct方法被调用");
-        File file = new File(MyService.class.getClassLoader().getResource("../../model/同义词new.txt").getPath());
+        File dicFile = new File(MyService.class.getClassLoader().getResource("../../model/同义词new.txt").getPath());
+        File forestFile = new File(MyService.class.getClassLoader().getResource("../../model/脉舌词典带标签.txt").getPath());
         try {
-            Repository.readDic(file);
+            Repository.readDic(dicFile);
+            Repository.readForest(forestFile);
             Repository.genRepository(ruleDao);
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,30 +78,47 @@ public class MyService implements ServiceInterface{
     }
 
 
-    public User selectUserById(Integer userId) {
-        return userDao.selectUserById(userId);
+//    public User selectUserById(Integer userId) {
+//        return userDao.selectUserById(userId);
+//    }
+//
+//    public User selectUserByName(String name) {
+//        return userDao.selectUserByName(name);
+//    }
+//
+//    public void updateUser(User user) {
+//        userDao.updateUser(user);
+//    }
+//
+//    public void deleteUserByName(String userName) {
+//        userDao.deleteUserByName(userName);
+//    }
+//
+//    public List<User> selectAllUser() {
+//        return userDao.selectAllUsers();
+//    }
+
+    public Discase selectDiscaseById(int id) {
+        return discaseDao.selectDiscaseById(id);
     }
 
-    public User selectUserByName(String name) {
-        return userDao.selectUserByName(name);
+
+    public void updateDiscase(Discase discase) {
+        discaseDao.updateDiscase(discase);
     }
 
-    public void updateUser(User user) {
-        userDao.updateUser(user);
+    public void deleteDiscaseById(int id) {
+        discaseDao.deleteDiscase(id);
     }
 
-    public void deleteUserByName(String userName) {
-        userDao.deleteUserByName(userName);
+    public List<Discase> selectAllDiscase() {
+        return discaseDao.selectAllDiscases();
     }
 
-    public List<User> selectAllUser() {
-        return userDao.selectAllUsers();
-    }
 
     public Rule selectByName(String name) {
         return ruleDao.selectRuleByName(name);
     }
-
 
 
 }
