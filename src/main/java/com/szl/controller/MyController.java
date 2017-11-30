@@ -38,6 +38,24 @@ public class MyController {
 
 
     @ResponseBody
+    @RequestMapping("/add")
+    public String add(  @RequestParam("info") String info,
+                        @RequestParam("medicalHis") String medicalHis,
+                        @RequestParam("examine") String examine,
+                        @RequestParam("disease") String disease) {
+        System.out.println("进入addd");
+        Discase discase = new Discase(1, info, medicalHis, examine, disease);
+        myService.insertDiscase(discase);
+        return "true";
+    }
+
+
+    @RequestMapping("/newcase")
+    public String newcase(HttpServletRequest request) {
+        return "newcase";
+    }
+
+    @ResponseBody
     @RequestMapping("/selectTest")
     public String  selectTest( @RequestParam(value = "gender") String gender,
                                @RequestParam(value = "age") String age,
@@ -145,7 +163,11 @@ public class MyController {
     }
 
     @RequestMapping("/login")
-    public String login() {
+    public String login(HttpServletRequest request) {
+        if (request.getSession().getAttribute(loginSession) != null) {
+            System.out.println("已登录");
+            return "redirect:/information";
+        }
         return "login";
     }
 

@@ -107,6 +107,10 @@ public class MyService implements ServiceInterface {
         discaseDao.updateDiscase(discase);
     }
 
+    public void insertDiscase(Discase discase) {
+        discaseDao.insertDiscase(discase);
+    }
+
     public void deleteDiscaseById(int id) {
         discaseDao.deleteDiscase(id);
     }
