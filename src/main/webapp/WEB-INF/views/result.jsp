@@ -19,20 +19,24 @@
             background-image: url(<c:url value='/static/img/结果.png'/>);
             background-size: 100%;
             background-position: center;
+            background-repeat: no-repeat;
         }
     </style>
 </head>
 <body>
 <div style="position:relative;left:0px;top:0px">
+    <div style="position:absolute;left:495px;top:78px">
+        <a href="information"><img src=<c:url value='/static/img/返回.png'/>/></a>
+    </div>
     <form class="form-horizontal" action="result" method="get">
-        <div style="position:absolute;left:575px;top:165px">
+        <div style="position:absolute;left:575px;top:172px">
             <select name="gender" value="${gender}" class="form-control" style="width:80px;">
                 <option<c:if test="${gender == 'male'}"> selected = "selected"</c:if>>男</option>
                 <option<c:if test="${gender == 'female'}"> selected = "selected"</c:if>>女</option>
             </select>
         </div>
 
-        <div style="position:absolute;left:740px;top:165px">
+        <div style="position:absolute;left:740px;top:172px">
             <select name="age" class="form-control" style="width:160px;">
                 <option<c:if test="${age == '未选择'}"> selected = "selected"</c:if>>未选择</option>
                 <option<c:if test="${age == '1岁'}"> selected = "selected"</c:if>>1岁</option>
@@ -138,7 +142,7 @@
         </div>
 
 
-        <div style="position:relative;left:975px;top:165px">
+        <div style="position:absolute;left:975px;top:172px">
             <select name="profession" value="${profession}" class="form-control" style="width:213px;">
                 <option<c:if test="${profession == '未选择'}"> selected = "selected"</c:if>>未选择</option>
                 <option<c:if test="${profession == '工人'}"> selected = "selected"</c:if>>工人</option>
@@ -155,9 +159,14 @@
             </select>
         </div>
 
-        <div style="overflow:auto;position:absolute;left:488px;top:261px;width:220px;">
+        <div style="overflow:auto;position:absolute;left:488px;top:270px;width:220px;">
             <table class="table table-condensed">
-                <c:forEach items="${existZhengzhuangs}" var="existZhengzhuang">
+                <c:forEach items="${existZhengzhuangs}" var="existZhengzhuang" begin="0" end="0">
+                    <tr>
+                        <td>&#12288;<input type="checkbox" name="zhengzhuang" value="${existZhengzhuang}" onclick="return false;" checked>&thinsp;&thinsp;${existZhengzhuang}</td>
+                    </tr>
+                </c:forEach>
+                <c:forEach items="${existZhengzhuangs}" var="existZhengzhuang" begin="1">
                     <tr>
                         <td>&#12288;<input type="checkbox" name="zhengzhuang" value="${existZhengzhuang}" checked>&thinsp;&thinsp;${existZhengzhuang}</td>
                     </tr>
@@ -195,8 +204,8 @@
         </div>
 
 
-        <div style="position:absolute;left:630px;top:232px">
-            <button class="btn btn-primary btn-sm" type="submit">重新检查</button>
+        <div style="position:absolute;left:630px;top:241px">
+            <button class="btn btn-primary btn-xs" type="submit">重新检查</button>
         </div>
 
         <div class="dropdown" style="position:absolute;left:1380px;top:80px">

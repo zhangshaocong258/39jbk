@@ -16,20 +16,20 @@
     <script type="text/javascript" src="<c:url value='/static/js/bootstrap.min.js'/>"></script>
     <style>
         body {
-            background-image: url(<c:url value='/static/img/病例背景.png'/>);
+            background-image: url(<c:url value='/static/img/新增病例.png'/>);
             background-size: 100%;
             background-position: center;
             background-repeat: no-repeat;
         }
     </style>
     <script type="text/javascript">
-        function doTrain() {
-            $.get("train", $("#train").serialize(), function (data) {
+        function doAdd() {
+            $.get("add", $("#add").serialize(), function (data) {
                 if (data == "true") {
-                    alert("训练成功!");
-                    location = "information";
+                    alert("添加成功!");
+                    location = "message";
                 } else {
-                    alert("训练失败");
+                    alert("添加成功");
                 }
             });
         }
@@ -45,24 +45,21 @@
 
     <div style="overflow:auto;position:absolute;left:535px;top:240px;height:500px;width:900px;">
         <table class="table table-condensed">
-            <c:forEach items="${discases}" var="discase">
-                <form name="myForm" class="form-horizontal" action="handler" method="get">
-                    <input type="hidden" name="id" value="${discase.id}">
+                <form id="add" class="form-horizontal" action="" method="get">
                     <tr>
-                        <td><input style="width: 200px" type="text" name="info" value="${discase.info}">
+                        <td><input style="width: 200px" type="text" name="info" value="个人信息: ">
                             <br>
-                            <input style="width: 500px" type="text" name="medicalHis" value="${discase.medicalHis}">
+                            <input style="width: 500px" type="text" name="medicalHis" value="主诉及病史: ">
                             <br>
-                            <input style="width: 500px" type="text" name="examine" value="${discase.examine}">
+                            <input style="width: 500px" type="text" name="examine" value="诊查: ">
                             <br>
-                            <input style="width: 200px" type="text" name="disease" value="${discase.disease}">
+                            <input style="width: 200px" type="text" name="disease" value="辨证: ">
                             <br>
-                            <button class="btn btn-primary" type="submit" name="act" value="edit">修改</button>
-                            <button class="btn btn-danger" type="submit" name="act" value="del">删除</button>
+                            <input class="btn btn-primary" type="button" value="添加" onclick="doAdd()">
+                            <%--<button class="btn btn-danger" type="submit" name="act" value="del">删除</button>--%>
                         </td>
                     </tr>
                 </form>
-            </c:forEach>
         </table>
     </div>
 
@@ -76,12 +73,6 @@
                                      aria-hidden="true"/>&thinsp;退出</a></li>
         </ul>
     </div>
-    <form action="" method="get" id="train">
-        <input type="hidden" name="train" value="train">
-        <div style="position:absolute;left:540px;top:780px">
-            <input class="btn btn-primary" type="button" value="训练模型" onclick="doTrain()">
-        </div>
-    </form>
 </div>
 </body>
 </html>

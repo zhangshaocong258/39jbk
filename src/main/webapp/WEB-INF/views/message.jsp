@@ -60,6 +60,11 @@
             <a class="btn btn-primary" href="discase">查看所有病例</a>
         </div>
     </c:if>
+    <c:if test="${privilege == 'admin'}">
+        <div style="position:absolute;left:650px;top:600px">
+            <a class="btn btn-success" href="newcase">新增病例</a>
+        </div>
+    </c:if>
 
 </div>
 

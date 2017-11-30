@@ -19,20 +19,69 @@
             background-image: url(<c:url value='/static/img/选择症状.png'/>);
             background-size: 100%;
             background-position: center;
+            background-repeat: no-repeat;
         }
     </style>
+    <script type="text/javascript">
+        function submitTest() {
+            var form = document.forms['myform'];
+            var i, zz = 0, sz = 0, st = 0, m = 0;
+            for (i = 0; i < form.length; i++) {
+                var e = form[i];
+                if (e.checked && e.type == 'checkbox' && e.name == 'zhengzhuang') {
+                    zz++;
+                    if (zz > 0 && sz>0 && st >0 && m>0) {
+                        break;
+                    }
+                } else if (e.checked && e.type == 'checkbox' && e.name == 'shezhi') {
+                    sz++;
+                    if (zz > 0 && sz>0 && st >0 && m>0) {
+                        break;
+                    }
+                } else if (e.checked && e.type == 'checkbox' && e.name == 'shetai') {
+                    st++;
+                    if (zz > 0 && sz>0 && st >0 && m>0) {
+                        break;
+                    }
+                } else if (e.checked && e.type == 'checkbox' && e.name == 'mai') {
+                    m++;
+                    if (zz > 0 && sz>0 && st >0 && m>0) {
+                        break;
+                    }
+                }
+            }
+            if(zz ==0) {
+                alert("请选择症状");
+                return false;
+            } else if ( sz ==0) {
+                alert("请选择舌质");
+                return false;
+            } else if ( st ==0) {
+                alert("请选择舌苔");
+                return false;
+            } else if ( m ==0) {
+                alert("请选择脉象");
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
 </head>
 <body>
 <div style="position:relative;left:0px;top:0px">
-    <form class="form-horizontal" action="result" method="get">
-        <div style="position:absolute;left:575px;top:165px">
+    <div style="position:absolute;left:495px;top:78px">
+        <a href="information"><img src=<c:url value='/static/img/返回.png'/>/></a>
+    </div>
+    <form name="myform" class="form-horizontal" action="result" method="get" onsubmit="return submitTest()">
+        <div style="position:absolute;left:575px;top:172px">
             <select name="gender" value="${gender}" class="form-control" style="width:80px;">
                 <option<c:if test="${gender == 'male'}"> selected = "selected"</c:if>>男</option>
                 <option<c:if test="${gender == 'female'}"> selected = "selected"</c:if>>女</option>
             </select>
         </div>
 
-        <div style="position:absolute;left:740px;top:165px">
+        <div style="position:absolute;left:740px;top:172px">
             <select name="age" class="form-control" style="width:160px;">
                 <option<c:if test="${age == '未选择'}"> selected = "selected"</c:if>>未选择</option>
                 <option<c:if test="${age == '1岁'}"> selected = "selected"</c:if>>1岁</option>
@@ -138,7 +187,7 @@
         </div>
 
 
-        <div style="position:relative;left:975px;top:165px">
+        <div style="position:absolute;left:975px;top:172px">
             <select name="profession" value="${profession}" class="form-control" style="width:213px;">
                 <option<c:if test="${profession == '未选择'}"> selected = "selected"</c:if>>未选择</option>
                 <option<c:if test="${profession == '工人'}"> selected = "selected"</c:if>>工人</option>
@@ -155,7 +204,7 @@
             </select>
         </div>
 
-        <div style="position:absolute;left:575px;top:280px;width:660px;">
+        <div style="position:absolute;left:575px;top:285px;width:658px;">
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
@@ -173,172 +222,478 @@
             <div style="overflow:auto;height:400px;" class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="zhengzhuang">
                     <table class="table table-striped">
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="心悸">&thinsp;&thinsp;心悸</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="气短">&thinsp;&thinsp;气短</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="神疲">&thinsp;&thinsp;神疲</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="面色淡白">&thinsp;&thinsp;面色淡白</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="头晕">&thinsp;&thinsp;头晕</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="自汗">&thinsp;&thinsp;自汗</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="神思恍惚">&thinsp;&thinsp;神思恍惚</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="善惊易恐">&thinsp;&thinsp;善惊易恐</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="失眠多梦">&thinsp;&thinsp;失眠多梦</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="胸闷">&thinsp;&thinsp;胸闷</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="胸痛">&thinsp;&thinsp;胸痛</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="急躁易怒">&thinsp;&thinsp;急躁易怒</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="腰酸">&thinsp;&thinsp;腰酸</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="腰痛">&thinsp;&thinsp;腰痛</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="膝酸">&thinsp;&thinsp;膝酸</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="膝痛">&thinsp;&thinsp;膝痛</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="遗精">&thinsp;&thinsp;遗精</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="五心烦热">&thinsp;&thinsp;五心烦热</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="口燥咽干">&thinsp;&thinsp;口燥咽干</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="面色潮红">&thinsp;&thinsp;面色潮红</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="盗汗">&thinsp;&thinsp;盗汗</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="形体消瘦">&thinsp;&thinsp;形体消瘦</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="唇红">&thinsp;&thinsp;唇红</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="唇紫">&thinsp;&thinsp;唇紫</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="唇苍白">&thinsp;&thinsp;唇苍白</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="甲苍白">&thinsp;&thinsp;甲苍白</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="潮热">&thinsp;&thinsp;潮热</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="头痛">&thinsp;&thinsp;头痛</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="两目干涩">&thinsp;&thinsp;两目干涩</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="耳鸣">&thinsp;&thinsp;耳鸣</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="耳聋">&thinsp;&thinsp;耳聋</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="健忘">&thinsp;&thinsp;健忘</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="咽痛">&thinsp;&thinsp;咽痛</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="关节屈伸不利">&thinsp;&thinsp;关节屈伸不利</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="肢体麻木">&thinsp;&thinsp;肢体麻木</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="肢体拘挛">&thinsp;&thinsp;肢体拘挛</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="肢体强直">&thinsp;&thinsp;肢体强直</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="肢体抽搐">&thinsp;&thinsp;肢体抽搐</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="不能久立">&thinsp;&thinsp;不能久立</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="步履不正">&thinsp;&thinsp;步履不正</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="闭经">&thinsp;&thinsp;闭经</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="月经过多">&thinsp;&thinsp;月经过多</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="尿短">&thinsp;&thinsp;尿短</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="尿黄">&thinsp;&thinsp;尿黄</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="尿频">&thinsp;&thinsp;尿频</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="尿混浊">&thinsp;&thinsp;尿混浊</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="大便干结">&thinsp;&thinsp;大便干结</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="口淡无味">&thinsp;&thinsp;口淡无味</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="食欲不振">&thinsp;&thinsp;食欲不振</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="腹胀">&thinsp;&thinsp;腹胀</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="大便时溏">&thinsp;&thinsp;大便时溏</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="肢倦乏力">&thinsp;&thinsp;肢倦乏力</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="面色萎黄">&thinsp;&thinsp;面色萎黄</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="怠惰嗜卧">&thinsp;&thinsp;怠惰嗜卧</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="忧虑重重">&thinsp;&thinsp;忧虑重重</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="少气懒言">&thinsp;&thinsp;少气懒言</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="呕吐">&thinsp;&thinsp;呕吐</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="腹痛">&thinsp;&thinsp;腹痛</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="畏寒肢冷">&thinsp;&thinsp;畏寒肢冷</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="不能食生冷">&thinsp;&thinsp;不能食生冷</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="多涎">&thinsp;&thinsp;多涎</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="便秘">&thinsp;&thinsp;便秘</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="肢体浮肿">&thinsp;&thinsp;肢体浮肿</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="头面浮肿">&thinsp;&thinsp;头面浮肿</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="发热">&thinsp;&thinsp;发热</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="白带多">&thinsp;&thinsp;白带多</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="月经少">&thinsp;&thinsp;月经少</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="痰多">&thinsp;&thinsp;痰多</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="肢体酸楚">&thinsp;&thinsp;肢体酸楚</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="双下肢水肿">&thinsp;&thinsp;双下肢水肿</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="目不欲睁">&thinsp;&thinsp;目不欲睁</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="腿痛">&thinsp;&thinsp;腿痛</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="嘈杂">&thinsp;&thinsp;嘈杂</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="膝软无力">&thinsp;&thinsp;膝软无力</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="胃胀">&thinsp;&thinsp;胃胀</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="月经失调">&thinsp;&thinsp;月经失调</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="大便失禁">&thinsp;&thinsp;大便失禁</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="恶心">&thinsp;&thinsp;恶心</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="口臭">&thinsp;&thinsp;口臭</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="皮肤苍白">&thinsp;&thinsp;皮肤苍白</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="口苦">&thinsp;&thinsp;口苦</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="四肢疼痛">&thinsp;&thinsp;四肢疼痛</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="反酸">&thinsp;&thinsp;反酸</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="易饥">&thinsp;&thinsp;易饥</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="腹泻">&thinsp;&thinsp;腹泻</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="肠鸣">&thinsp;&thinsp;肠鸣</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="关节酸楚">&thinsp;&thinsp;关节酸楚</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="咳嗽">&thinsp;&thinsp;咳嗽</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="完谷不化">&thinsp;&thinsp;完谷不化</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="尿无力">&thinsp;&thinsp;尿无力</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="嗳气">&thinsp;&thinsp;嗳气</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="周身瘙痒">&thinsp;&thinsp;周身瘙痒</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="胃痛">&thinsp;&thinsp;胃痛</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="矢气频频">&thinsp;&thinsp;矢气频频</td></tr>
-                        <tr><td><input type="checkbox" name="zhengzhuang" value="腿酸">&thinsp;&thinsp;腿酸</td></tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="心悸">&thinsp;&thinsp;心悸</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="气短">&thinsp;&thinsp;气短</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="神疲">&thinsp;&thinsp;神疲</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="面色淡白">&thinsp;&thinsp;面色淡白</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="头晕">&thinsp;&thinsp;头晕</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="自汗">&thinsp;&thinsp;自汗</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="神思恍惚">&thinsp;&thinsp;神思恍惚</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="善惊易恐">&thinsp;&thinsp;善惊易恐</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="失眠多梦">&thinsp;&thinsp;失眠多梦</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="胸闷">&thinsp;&thinsp;胸闷</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="胸痛">&thinsp;&thinsp;胸痛</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="急躁易怒">&thinsp;&thinsp;急躁易怒</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="腰酸">&thinsp;&thinsp;腰酸</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="腰痛">&thinsp;&thinsp;腰痛</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="膝酸">&thinsp;&thinsp;膝酸</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="膝痛">&thinsp;&thinsp;膝痛</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="遗精">&thinsp;&thinsp;遗精</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="五心烦热">&thinsp;&thinsp;五心烦热</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="口燥咽干">&thinsp;&thinsp;口燥咽干</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="面色潮红">&thinsp;&thinsp;面色潮红</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="盗汗">&thinsp;&thinsp;盗汗</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="形体消瘦">&thinsp;&thinsp;形体消瘦</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="唇红">&thinsp;&thinsp;唇红</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="唇紫">&thinsp;&thinsp;唇紫</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="唇苍白">&thinsp;&thinsp;唇苍白</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="甲苍白">&thinsp;&thinsp;甲苍白</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="潮热">&thinsp;&thinsp;潮热</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="头痛">&thinsp;&thinsp;头痛</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="两目干涩">&thinsp;&thinsp;两目干涩</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="耳鸣">&thinsp;&thinsp;耳鸣</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="耳聋">&thinsp;&thinsp;耳聋</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="健忘">&thinsp;&thinsp;健忘</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="咽痛">&thinsp;&thinsp;咽痛</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="关节屈伸不利">&thinsp;&thinsp;关节屈伸不利</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="肢体麻木">&thinsp;&thinsp;肢体麻木</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="肢体拘挛">&thinsp;&thinsp;肢体拘挛</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="肢体强直">&thinsp;&thinsp;肢体强直</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="肢体抽搐">&thinsp;&thinsp;肢体抽搐</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="不能久立">&thinsp;&thinsp;不能久立</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="步履不正">&thinsp;&thinsp;步履不正</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="闭经">&thinsp;&thinsp;闭经</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="月经过多">&thinsp;&thinsp;月经过多</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="尿短">&thinsp;&thinsp;尿短</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="尿黄">&thinsp;&thinsp;尿黄</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="尿频">&thinsp;&thinsp;尿频</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="尿混浊">&thinsp;&thinsp;尿混浊</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="大便干结">&thinsp;&thinsp;大便干结</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="口淡无味">&thinsp;&thinsp;口淡无味</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="食欲不振">&thinsp;&thinsp;食欲不振</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="腹胀">&thinsp;&thinsp;腹胀</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="大便时溏">&thinsp;&thinsp;大便时溏</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="肢倦乏力">&thinsp;&thinsp;肢倦乏力</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="面色萎黄">&thinsp;&thinsp;面色萎黄</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="怠惰嗜卧">&thinsp;&thinsp;怠惰嗜卧</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="忧虑重重">&thinsp;&thinsp;忧虑重重</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="少气懒言">&thinsp;&thinsp;少气懒言</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="呕吐">&thinsp;&thinsp;呕吐</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="腹痛">&thinsp;&thinsp;腹痛</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="畏寒肢冷">&thinsp;&thinsp;畏寒肢冷</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="不能食生冷">&thinsp;&thinsp;不能食生冷</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="多涎">&thinsp;&thinsp;多涎</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="便秘">&thinsp;&thinsp;便秘</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="肢体浮肿">&thinsp;&thinsp;肢体浮肿</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="头面浮肿">&thinsp;&thinsp;头面浮肿</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="发热">&thinsp;&thinsp;发热</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="白带多">&thinsp;&thinsp;白带多</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="月经少">&thinsp;&thinsp;月经少</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="痰多">&thinsp;&thinsp;痰多</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="肢体酸楚">&thinsp;&thinsp;肢体酸楚</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="双下肢水肿">&thinsp;&thinsp;双下肢水肿</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="目不欲睁">&thinsp;&thinsp;目不欲睁</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="腿痛">&thinsp;&thinsp;腿痛</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="嘈杂">&thinsp;&thinsp;嘈杂</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="膝软无力">&thinsp;&thinsp;膝软无力</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="胃胀">&thinsp;&thinsp;胃胀</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="月经失调">&thinsp;&thinsp;月经失调</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="大便失禁">&thinsp;&thinsp;大便失禁</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="恶心">&thinsp;&thinsp;恶心</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="口臭">&thinsp;&thinsp;口臭</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="皮肤苍白">&thinsp;&thinsp;皮肤苍白</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="口苦">&thinsp;&thinsp;口苦</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="四肢疼痛">&thinsp;&thinsp;四肢疼痛</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="反酸">&thinsp;&thinsp;反酸</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="易饥">&thinsp;&thinsp;易饥</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="腹泻">&thinsp;&thinsp;腹泻</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="肠鸣">&thinsp;&thinsp;肠鸣</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="关节酸楚">&thinsp;&thinsp;关节酸楚</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="咳嗽">&thinsp;&thinsp;咳嗽</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="完谷不化">&thinsp;&thinsp;完谷不化</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="尿无力">&thinsp;&thinsp;尿无力</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="嗳气">&thinsp;&thinsp;嗳气</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="周身瘙痒">&thinsp;&thinsp;周身瘙痒</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="胃痛">&thinsp;&thinsp;胃痛</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="矢气频频">&thinsp;&thinsp;矢气频频</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="zhengzhuang" value="腿酸">&thinsp;&thinsp;腿酸</td>
+                        </tr>
 
                     </table>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="shezhi">
                     <table class="table table-striped">
-                        <tr><td><input type="checkbox" name="shezhi" value="淡红">&thinsp;&thinsp;淡红</td></tr>
-                        <tr><td><input type="checkbox" name="shezhi" value="淡白">&thinsp;&thinsp;淡白</td></tr>
-                        <tr><td><input type="checkbox" name="shezhi" value="红">&thinsp;&thinsp;红</td></tr>
-                        <tr><td><input type="checkbox" name="shezhi" value="白">&thinsp;&thinsp;白</td></tr>
-                        <tr><td><input type="checkbox" name="shezhi" value="绛">&thinsp;&thinsp;绛</td></tr>
-                        <tr><td><input type="checkbox" name="shezhi" value="青">&thinsp;&thinsp;青</td></tr>
-                        <tr><td><input type="checkbox" name="shezhi" value="紫">&thinsp;&thinsp;紫</td></tr>
-                        <tr><td><input type="checkbox" name="shezhi" value="老">&thinsp;&thinsp;老</td></tr>
-                        <tr><td><input type="checkbox" name="shezhi" value="嫩">&thinsp;&thinsp;嫩</td></tr>
-                        <tr><td><input type="checkbox" name="shezhi" value="胖">&thinsp;&thinsp;胖</td></tr>
-                        <tr><td><input type="checkbox" name="shezhi" value="瘦">&thinsp;&thinsp;瘦</td></tr>
-                        <tr><td><input type="checkbox" name="shezhi" value="点">&thinsp;&thinsp;点</td></tr>
-                        <tr><td><input type="checkbox" name="shezhi" value="刺">&thinsp;&thinsp;刺</td></tr>
-                        <tr><td><input type="checkbox" name="shezhi" value="裂">&thinsp;&thinsp;裂</td></tr>
-                        <tr><td><input type="checkbox" name="shezhi" value="齿">&thinsp;&thinsp;齿</td></tr>
+                        <tr>
+                            <td><input type="checkbox" name="shezhi" value="淡红">&thinsp;&thinsp;淡红</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shezhi" value="淡白">&thinsp;&thinsp;淡白</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shezhi" value="红">&thinsp;&thinsp;红</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shezhi" value="白">&thinsp;&thinsp;白</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shezhi" value="绛">&thinsp;&thinsp;绛</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shezhi" value="青">&thinsp;&thinsp;青</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shezhi" value="紫">&thinsp;&thinsp;紫</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shezhi" value="老">&thinsp;&thinsp;老</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shezhi" value="嫩">&thinsp;&thinsp;嫩</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shezhi" value="胖">&thinsp;&thinsp;胖</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shezhi" value="瘦">&thinsp;&thinsp;瘦</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shezhi" value="点">&thinsp;&thinsp;点</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shezhi" value="刺">&thinsp;&thinsp;刺</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shezhi" value="裂">&thinsp;&thinsp;裂</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shezhi" value="齿">&thinsp;&thinsp;齿</td>
+                        </tr>
                     </table>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="shetai">
                     <table class="table table-striped">
-                        <tr><td><input type="checkbox" name="shetai" value="厚">&thinsp;&thinsp;厚</td></tr>
-                        <tr><td><input type="checkbox" name="shetai" value="薄">&thinsp;&thinsp;薄</td></tr>
-                        <tr><td><input type="checkbox" name="shetai" value="润">&thinsp;&thinsp;润</td></tr>
-                        <tr><td><input type="checkbox" name="shetai" value="燥">&thinsp;&thinsp;燥</td></tr>
-                        <tr><td><input type="checkbox" name="shetai" value="少津">&thinsp;&thinsp;少津</td></tr>
-                        <tr><td><input type="checkbox" name="shetai" value="腻">&thinsp;&thinsp;腻</td></tr>
-                        <tr><td><input type="checkbox" name="shetai" value="腐">&thinsp;&thinsp;腐</td></tr>
-                        <tr><td><input type="checkbox" name="shetai" value="剥落">&thinsp;&thinsp;剥落</td></tr>
-                        <tr><td><input type="checkbox" name="shetai" value="真">&thinsp;&thinsp;真</td></tr>
-                        <tr><td><input type="checkbox" name="shetai" value="假">&thinsp;&thinsp;假</td></tr>
-                        <tr><td><input type="checkbox" name="shetai" value="少">&thinsp;&thinsp;少</td></tr>
-                        <tr><td><input type="checkbox" name="shetai" value="无">&thinsp;&thinsp;无</td></tr>
-                        <tr><td><input type="checkbox" name="shetai" value="白">&thinsp;&thinsp;白</td></tr>
-                        <tr><td><input type="checkbox" name="shetai" value="黄">&thinsp;&thinsp;黄</td></tr>
-                        <tr><td><input type="checkbox" name="shetai" value="灰黑">&thinsp;&thinsp;灰黑</td></tr>
+                        <tr>
+                            <td><input type="checkbox" name="shetai" value="厚">&thinsp;&thinsp;厚</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shetai" value="薄">&thinsp;&thinsp;薄</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shetai" value="润">&thinsp;&thinsp;润</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shetai" value="燥">&thinsp;&thinsp;燥</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shetai" value="少津">&thinsp;&thinsp;少津</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shetai" value="腻">&thinsp;&thinsp;腻</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shetai" value="腐">&thinsp;&thinsp;腐</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shetai" value="剥落">&thinsp;&thinsp;剥落</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shetai" value="真">&thinsp;&thinsp;真</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shetai" value="假">&thinsp;&thinsp;假</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shetai" value="少">&thinsp;&thinsp;少</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shetai" value="无">&thinsp;&thinsp;无</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shetai" value="白">&thinsp;&thinsp;白</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shetai" value="黄">&thinsp;&thinsp;黄</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="shetai" value="灰黑">&thinsp;&thinsp;灰黑</td>
+                        </tr>
                     </table>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="maixiang">
                     <table class="table table-striped">
-                        <tr><td><input type="checkbox" name="mai" value="浮">&thinsp;&thinsp;浮</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="沉">&thinsp;&thinsp;沉</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="迟">&thinsp;&thinsp;迟</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="数">&thinsp;&thinsp;数</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="洪">&thinsp;&thinsp;洪</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="细">&thinsp;&thinsp;细</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="虚">&thinsp;&thinsp;虚</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="实">&thinsp;&thinsp;实</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="滑">&thinsp;&thinsp;滑</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="涩">&thinsp;&thinsp;涩</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="弦">&thinsp;&thinsp;弦</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="紧">&thinsp;&thinsp;紧</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="结">&thinsp;&thinsp;结</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="代">&thinsp;&thinsp;代</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="促">&thinsp;&thinsp;促</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="长">&thinsp;&thinsp;长</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="短">&thinsp;&thinsp;短</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="缓">&thinsp;&thinsp;缓</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="濡">&thinsp;&thinsp;濡</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="弱">&thinsp;&thinsp;弱</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="微">&thinsp;&thinsp;微</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="散">&thinsp;&thinsp;散</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="芤">&thinsp;&thinsp;芤</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="伏">&thinsp;&thinsp;伏</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="牢">&thinsp;&thinsp;牢</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="革">&thinsp;&thinsp;革</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="动">&thinsp;&thinsp;动</td></tr>
-                        <tr><td><input type="checkbox" name="mai" value="疾">&thinsp;&thinsp;疾</td></tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="浮">&thinsp;&thinsp;浮</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="沉">&thinsp;&thinsp;沉</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="迟">&thinsp;&thinsp;迟</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="数">&thinsp;&thinsp;数</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="洪">&thinsp;&thinsp;洪</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="细">&thinsp;&thinsp;细</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="虚">&thinsp;&thinsp;虚</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="实">&thinsp;&thinsp;实</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="滑">&thinsp;&thinsp;滑</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="涩">&thinsp;&thinsp;涩</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="弦">&thinsp;&thinsp;弦</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="紧">&thinsp;&thinsp;紧</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="结">&thinsp;&thinsp;结</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="代">&thinsp;&thinsp;代</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="促">&thinsp;&thinsp;促</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="长">&thinsp;&thinsp;长</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="短">&thinsp;&thinsp;短</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="缓">&thinsp;&thinsp;缓</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="濡">&thinsp;&thinsp;濡</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="弱">&thinsp;&thinsp;弱</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="微">&thinsp;&thinsp;微</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="散">&thinsp;&thinsp;散</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="芤">&thinsp;&thinsp;芤</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="伏">&thinsp;&thinsp;伏</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="牢">&thinsp;&thinsp;牢</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="革">&thinsp;&thinsp;革</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="动">&thinsp;&thinsp;动</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" name="mai" value="疾">&thinsp;&thinsp;疾</td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -346,7 +701,7 @@
         </div>
 
 
-        <div style="position:absolute;left:575px;top:750px">
+        <div style="position:absolute;left:575px;top:755px">
             <button class="btn btn-primary" type="submit">开始检查</button>
         </div>
 
