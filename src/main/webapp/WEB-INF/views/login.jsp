@@ -14,8 +14,29 @@
     <link rel="stylesheet" type="text/css" href="static/res/ui/css/base.css">
     <link rel="stylesheet" type="text/css" href="static/res/passport/css/login.css">
     <script type="text/javascript" src="static/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="static/js/jquery.cookie.js"></script>
     <script type="text/javascript">
+        $(document).ready(function () {
+            if ($.cookie("rmbUser") == "true") {
+                $("#chk11").prop("checked", true);
+                $("#username").val($.cookie("username"));
+                $("#password").val($.cookie("password"));
+            }
+        });
         function doLogin() {
+
+            if ($("#chk11").prop("checked")) {
+                var str_username = $("#username").val();
+                var str_password = $("#password").val();
+                $.cookie("rmbUser", "true", { expires: 7 }); //存储一个带7天期限的cookie
+                $.cookie("username", str_username, { expires: 7 });
+                $.cookie("password", str_password, { expires: 7 });
+            }
+            else {
+                $.cookie("rmbUser", "false", { expire: -1 });
+                $.cookie("username", "", { expires: -1 });
+                $.cookie("password", "", { expires: -1 });
+            }
             $.post("loginTest", $("#loginForm").serialize(), function (data) {
                 if (data == "true") {
 //                    alert("登录成功!");
@@ -26,6 +47,15 @@
             });
         }
     </script>
+    <script type="text/javascript">
+        document.onkeydown = function(e){
+            if(!e) e = window.event;
+            if((e.keyCode || e.which) == 13){
+                document.getElementById("input1").click();
+            }
+        }
+
+    </script>
 </head>
 <body>
 
@@ -35,14 +65,13 @@
 <form action="" method="post" id="loginForm">
     <div class="logina-main main clearfix">
         <div class="tab-con">
-            <form id="form-login" method="post" action="passport/ajax-login">
                 <div id='login-error' class="error-tip"></div>
                 <table border="0" cellspacing="0" cellpadding="0">
                     <tbody>
                     <tr>
                         <th>账户</th>
                         <td width="245">
-                            <input id="email" type="text" name="username" placeholder="用户名" autocomplete="off" value="">
+                            <input id="username" type="text" name="username" placeholder="用户名" value="">
                         </td>
                         <td>
                         </td>
@@ -50,7 +79,7 @@
                     <tr>
                         <th>密码</th>
                         <td width="245">
-                            <input id="password" type="password" name="password" placeholder="请输入密码" autocomplete="off">
+                            <input id="password" type="password" name="password" placeholder="请输入密码" >
                         </td>
                         <td>
                         </td>
@@ -59,7 +88,7 @@
                         <th></th>
                         <td>
                             <div>
-                                <%--<label class="checkbox" for="chk11"><input style="height: auto;" id="chk11" type="checkbox" name="remember_me" >记住我</label>--%>
+                                <label class="checkbox" for="chk11"><input style="height: auto;" id="chk11" type="checkbox" name="remember_me">记住我</label>
                                 <%--<a href="passport/forget-pwd">忘记密码？</a>--%>
                             </div>
                         </td>
@@ -67,12 +96,11 @@
                     </tr>
                     <tr>
                         <th></th>
-                        <td width="245"><input class="confirm" type="button" value="登  录" onclick="doLogin()"></td>
+                        <td width="245"><input id="input1" class="confirm" type="button" value="登  录" onclick="doLogin()"></td>
                         <td></td>
                     </tr>
                     </tbody>
                 </table>
-            </form>
         </div>
         <div class="reg">
             <p>还没有账号？<br>赶快免费注册一个吧！</p>
