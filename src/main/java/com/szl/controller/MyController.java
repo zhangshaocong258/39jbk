@@ -6,6 +6,7 @@ import com.szl.util.CookieUtil;
 import com.szl.service.MyService;
 import com.szl.util.DiseaseInf;
 import com.szl.util.Repository;
+import com.szl.util.WordEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by zsc on 2017/1/18.
@@ -159,7 +158,7 @@ public class MyController {
     @RequestMapping("/exit")
     public String exit(HttpServletRequest request) {
         request.getSession().removeAttribute(loginSession);
-        return "login";
+        return "redirect:/login";
     }
 
     @RequestMapping("/login")
@@ -191,7 +190,9 @@ public class MyController {
 
     @ResponseBody
     @RequestMapping("/loginTest")
-    public String loginTest(HttpServletRequest request, @RequestParam("username") String username, @RequestParam("password") String password) {
+    public String loginTest(HttpServletRequest request, @RequestParam("username") String username,
+                            @RequestParam("password") String password,
+                            @RequestParam("remember_me") String remember_me) {
         User user = myService.login(username, password);
         if (user != null) {
             request.getSession().setAttribute(loginSession, user);
@@ -263,6 +264,9 @@ public class MyController {
 //            System.out.println("mai " + str);
 //        }
         try {
+            Set<WordEntry> queryResult = new HashSet<WordEntry>();
+            List<String> zhengzhuangList2 = new ArrayList<String>();
+            Set<String> zhengzhuangList2Set = new HashSet<String>();
             List<String> zhengzhuangList = Arrays.asList(zhengzhuang);
             List<String> shezhiList = Arrays.asList(shezhi);
             List<String> shetaiList = Arrays.asList(shetai);
@@ -282,6 +286,27 @@ public class MyController {
             mav.addObject("shezhis", shezhiList);
             mav.addObject("shetais", shetaiList);
             mav.addObject("mais", maiList);
+            Set<String> zhengzhuangList1Set = new HashSet<String>();
+            zhengzhuangList1Set.addAll(zhengzhuangList);
+
+            //添加相关症状
+            for (String str : zhengzhuangList) {
+                queryResult = myService.distance(str);
+                int count = 10;
+                for (WordEntry disease : queryResult) {
+                    count--;
+                    if (count > 0) {
+                        if (!zhengzhuangList1Set.contains(disease.name)) {
+                            zhengzhuangList2Set.add(disease.name);
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            }
+            zhengzhuangList2.addAll(zhengzhuangList2Set);
+            mav.addObject("inexistZhengzhuangs", zhengzhuangList2);
+
 
         } catch (Exception e) {
             e.printStackTrace();
