@@ -229,7 +229,7 @@
                             <td><input type="checkbox" name="zhengzhuang" value="气短">&thinsp;&thinsp;气短</td>
                         </tr>
                         <tr>
-                            <td><input type="checkbox" name="zhengzhuang" value="神疲">&thinsp;&thinsp;神疲</td>
+                            <td><input type="checkbox" name="zhengzhuang" value="精神不振">&thinsp;&thinsp;精神不振</td>
                         </tr>
                         <tr>
                             <td><input type="checkbox" name="zhengzhuang" value="面色淡白">&thinsp;&thinsp;面色淡白</td>

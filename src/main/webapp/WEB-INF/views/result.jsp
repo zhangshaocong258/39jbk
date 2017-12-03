@@ -159,7 +159,7 @@
             </select>
         </div>
 
-        <div style="overflow:auto;position:absolute;left:488px;top:270px;width:220px;">
+        <div style="overflow:auto;position:absolute;left:488px;top:270px;width:220px;height:206px">
             <table class="table table-condensed">
                 <c:forEach items="${existZhengzhuangs}" var="existZhengzhuang" begin="0" end="0">
                     <tr>
@@ -169,6 +169,16 @@
                 <c:forEach items="${existZhengzhuangs}" var="existZhengzhuang" begin="1">
                     <tr>
                         <td>&#12288;<input type="checkbox" name="zhengzhuang" value="${existZhengzhuang}" checked>&thinsp;&thinsp;${existZhengzhuang}</td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
+
+        <div style="overflow:auto;position:absolute;left:488px;top:510px;width:220px;height:340px">
+            <table class="table table-condensed">
+                <c:forEach items="${inexistZhengzhuangs}" var="inexistZhengzhuang">
+                    <tr>
+                        <td>&#12288;<input type="checkbox" name="zhengzhuang" value="${inexistZhengzhuang}">&thinsp;&thinsp;${inexistZhengzhuang}</td>
                     </tr>
                 </c:forEach>
             </table>

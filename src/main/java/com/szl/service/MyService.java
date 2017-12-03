@@ -5,12 +5,15 @@ import com.szl.domain.Rule;
 import com.szl.dao.*;
 import com.szl.domain.User;
 import com.szl.util.Repository;
+import com.szl.util.Word2vec;
+import com.szl.util.WordEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by zsc on 2017/1/18.
@@ -20,6 +23,8 @@ import java.util.List;
  */
 @Service
 public class MyService implements ServiceInterface {
+
+    Word2vec word2vec;
 
     @Autowired
     private RuleDao ruleDao;
@@ -36,10 +41,13 @@ public class MyService implements ServiceInterface {
         System.out.println("@PostConstruct方法被调用");
         File dicFile = new File(MyService.class.getClassLoader().getResource("../../model/同义词new.txt").getPath());
         File forestFile = new File(MyService.class.getClassLoader().getResource("../../model/脉舌词典带标签.txt").getPath());
+        File w2v = new File(MyService.class.getClassLoader().getResource("../../model/vec10.bin").getPath());
         try {
             Repository.readDic(dicFile);
             Repository.readForest(forestFile);
             Repository.genRepository(ruleDao);
+            word2vec = new Word2vec();
+            word2vec.loadGoogleModel(w2v);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -97,6 +105,10 @@ public class MyService implements ServiceInterface {
 //    public List<User> selectAllUser() {
 //        return userDao.selectAllUsers();
 //    }
+
+    public Set<WordEntry> distance(String word) {
+        return word2vec.distance(word);
+    }
 
     public Discase selectDiscaseById(int id) {
         return discaseDao.selectDiscaseById(id);
