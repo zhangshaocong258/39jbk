@@ -7,6 +7,8 @@ import com.szl.service.MyService;
 import com.szl.util.DiseaseInf;
 import com.szl.util.Repository;
 import com.szl.util.WordEntry;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -95,6 +97,26 @@ public class MyController {
             e.printStackTrace();
         }
         return "true";
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/discaseAjax", produces = {"text/html;charset=UTF-8;"})
+    public String discaseAjax() {
+        List<Discase> discaseList = myService.selectAllDiscase();
+        int size = discaseList.size();
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < size; i++) {
+            JSONObject jsonObject = new JSONObject();
+            Discase discase = discaseList.get(i);
+            jsonObject.put("id", discase.getId());
+            jsonObject.put("info", discase.getInfo());
+            jsonObject.put("medicalHis", discase.getMedicalHis());
+            jsonObject.put("examine", discase.getExamine());
+            jsonObject.put("disease", discase.getDisease());
+            jsonArray.put(jsonObject);
+        }
+        return jsonArray.toString();
     }
 
 

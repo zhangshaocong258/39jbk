@@ -33,9 +33,35 @@
             /*border: 1px solid #f40;*/
         }
     </style>
+    <%--要加上单引号，否则冒号后的出不来--%>
     <script type="text/javascript">
+        $(document).ready(function () {
+            $.get("discaseAjax", null, function (data) {
+                $.each(data, function (index, obj) {
+                    $("#result").append("<form id='handler' name='myForm' class='form-horizontal' action='handler' method='get'>" +
+                            " <input type='hidden' name='id' value=" + obj['id'] + ">" +
+                            "<tr><td><input style='width: 200px' type='text' name='info' value='" + obj['info'] + "'><br>" +
+                            "<input style='width: 500px' type='text' name='medicalHis' value= '" + obj['medicalHis'] + "'><br>" +
+                            "<input style='width: 500px' type='text' name='examine' value='" + obj['examine'] + "'><br>" +
+                            "<input style='width: 200px' type='text' name='disease' value='" + obj['disease'] + "'><br>" +
+                            "<button class='btn btn-primary' type='submit' name='act' value='edit'>修改</button>" +
+                            "<button class='btn btn-danger' type='submit' name='act' value='del'>删除</button></td></tr></form>");
+                });
+            }, "json");
+        });
+
+//        function edit() {
+//            $.get("editAjax", $("#edit").serialize(), function (data) {
+//
+//            });
+//        }
+//
+//
+//        function del() {}
+
+
         function doTrain() {
-            $.get("train", $("#train").serialize(), function (data) {
+            $.get("train", null, function (data) {
                 if (data == "true") {
                     alert("训练成功!");
                     location = "information";
@@ -55,25 +81,25 @@
     </div>
 
     <div style="overflow:auto;position:absolute;left:55px;top:166px;height:500px;width:900px;">
-        <table class="table table-condensed">
-            <c:forEach items="${discases}" var="discase">
-                <form name="myForm" class="form-horizontal" action="handler" method="get">
-                    <input type="hidden" name="id" value="${discase.id}">
-                    <tr>
-                        <td><input style="width: 200px" type="text" name="info" value="${discase.info}">
-                            <br>
-                            <input style="width: 500px" type="text" name="medicalHis" value="${discase.medicalHis}">
-                            <br>
-                            <input style="width: 500px" type="text" name="examine" value="${discase.examine}">
-                            <br>
-                            <input style="width: 200px" type="text" name="disease" value="${discase.disease}">
-                            <br>
-                            <button class="btn btn-primary" type="submit" name="act" value="edit">修改</button>
-                            <button class="btn btn-danger" type="submit" name="act" value="del">删除</button>
-                        </td>
-                    </tr>
-                </form>
-            </c:forEach>
+        <table id="result" class="table table-condensed">
+            <%--<c:forEach items="${discases}" var="discase">--%>
+                <%--<form name="myForm" class="form-horizontal" action="handler" method="get">--%>
+                    <%--<input type="hidden" name="id" value="${discase.id}">--%>
+                    <%--<tr>--%>
+                        <%--<td><input style="width: 200px" type="text" name="info" value="${discase.info}">--%>
+                            <%--<br>--%>
+                            <%--<input style="width: 500px" type="text" name="medicalHis" value="${discase.medicalHis}">--%>
+                            <%--<br>--%>
+                            <%--<input style="width: 500px" type="text" name="examine" value="${discase.examine}">--%>
+                            <%--<br>--%>
+                            <%--<input style="width: 200px" type="text" name="disease" value="${discase.disease}">--%>
+                            <%--<br>--%>
+                            <%--<button class="btn btn-primary" type="submit" name="act" value="edit">修改</button>--%>
+                            <%--<button class="btn btn-danger" type="submit" name="act" value="del">删除</button>--%>
+                        <%--</td>--%>
+                    <%--</tr>--%>
+                <%--</form>--%>
+            <%--</c:forEach>--%>
         </table>
     </div>
 
@@ -88,7 +114,7 @@
         </ul>
     </div>
     <form action="" method="get" id="train">
-        <input type="hidden" name="train" value="train">
+        <%--<input type="hidden" name="train" value="train">--%>
         <div style="position:absolute;left:60px;top:706px">
             <input class="btn btn-primary" type="button" value="训练模型" onclick="doTrain()">
         </div>
