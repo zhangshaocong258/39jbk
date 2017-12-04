@@ -16,10 +16,21 @@
     <script type="text/javascript" src="<c:url value='/static/js/bootstrap.min.js'/>"></script>
     <style>
         body {
-            background-image: url(<c:url value='/static/img/病例背景.png'/>);
-            background-size: 100%;
-            background-position: center;
-            background-repeat: no-repeat;
+            text-align: center
+        }
+    </style>
+    <style>
+        .box {
+            background: url("<c:url value='/static/img/病例背景s.png'/>");
+            width: 970px;
+            height: 785px;
+            /*display: table-cell;*/
+            /*!* 水平居中 *!*/
+            /*text-align:center;*/
+            /*!* 垂直居中 *!*/
+            /*vertical-align:middle;*/
+            position: relative;
+            /*border: 1px solid #f40;*/
         }
     </style>
     <script type="text/javascript">
@@ -37,13 +48,13 @@
 
 </head>
 <body>
-<div style="position:relative;left:0px;top:0px">
-
-    <div style="position:absolute;left:495px;top:78px">
+<div style="margin:0 auto; margin-top: 80px; width:970px">
+    <div class="box">
+    <div style="position:absolute;left:10px;top:5px">
         <a href="information"><img src=<c:url value='/static/img/返回.png'/>/></a>
     </div>
 
-    <div style="overflow:auto;position:absolute;left:535px;top:240px;height:500px;width:900px;">
+    <div style="overflow:auto;position:absolute;left:55px;top:166px;height:500px;width:900px;">
         <table class="table table-condensed">
             <c:forEach items="${discases}" var="discase">
                 <form name="myForm" class="form-horizontal" action="handler" method="get">
@@ -66,7 +77,7 @@
         </table>
     </div>
 
-    <div class="dropdown" style="position:absolute;left:1380px;top:80px">
+    <div class="dropdown" style="position:absolute;right:0px;top: 6px">
         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="true">${user.userName}<span class="caret"></span></button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -78,10 +89,11 @@
     </div>
     <form action="" method="get" id="train">
         <input type="hidden" name="train" value="train">
-        <div style="position:absolute;left:540px;top:780px">
+        <div style="position:absolute;left:60px;top:706px">
             <input class="btn btn-primary" type="button" value="训练模型" onclick="doTrain()">
         </div>
     </form>
 </div>
+    </div>
 </body>
 </html>

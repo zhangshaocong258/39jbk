@@ -17,7 +17,6 @@
     <script type="text/javascript" src="static/js/jquery.cookie.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            alert("ready")
             if ($.cookie("rmbUser") == "true") {
                 $("#chk11").prop("checked", true);
                 $("#username").val($.cookie("username"));

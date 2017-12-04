@@ -17,19 +17,32 @@
     <script type="text/javascript" src="<c:url value='/static/js/bootstrap.min.js'/>"></script>
     <style>
         body {
-            background-image: url(<c:url value='/static/img/个人信息背景.png'/>);
-            background-size: 100%;
-            background-position: center;
-            background-repeat: no-repeat;
+            text-align: center
+        }
+    </style>
+    <style>
+        .box {
+            background: url("<c:url value='/static/img/个人信息背景s.png'/>");
+            width: 970px;
+            height: 785px;
+            /*display: table-cell;*/
+            /*!* 水平居中 *!*/
+            /*text-align:center;*/
+            /*!* 垂直居中 *!*/
+            /*vertical-align:middle;*/
+            position: relative;
+            /*border: 1px solid #f40;*/
         }
     </style>
 </head>
 <body>
-<div style="position:relative;left:0px;top:0px">
-    <div style="position:absolute;left:495px;top:78px">
+<div style="margin:0 auto; margin-top: 80px; width:970px">
+
+    <div class="box">
+    <div style="position:absolute;left:10px;top:5px">
         <a href="information"><img src=<c:url value='/static/img/返回.png'/>/></a>
     </div>
-    <div class="dropdown" style="position:absolute;left:1380px;top:80px">
+    <div class="dropdown" style="position:absolute;right:0px;top: 6px">
         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="true">${user.userName}<span class="caret"></span></button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -39,34 +52,35 @@
                                      aria-hidden="true"/>&thinsp;退出</a></li>
         </ul>
     </div>
-    <div style="position:absolute;left:610px;top:225px">
+    <div style="position:absolute;left:114px;top:153px">
         <h3 style="color:#666666">${user.userName}</h3>
     </div>
-    <div style="position:absolute;left:610px;top:285px">
+    <div style="position:absolute;left:114px;top:213px">
         <h3 style="color:#666666">${user.realName}</h3>
     </div>
-    <div style="position:absolute;left:610px;top:345px">
+    <div style="position:absolute;left:114px;top:273px">
         <h3 style="color:#666666">${user.userAge}</h3>
     </div>
-    <div style="position:absolute;left:610px;top:405px">
+    <div style="position:absolute;left:114px;top:333px">
         <h3 style="color:#666666">${user.userAddr}</h3>
     </div>
-    <div style="position:absolute;left:608px;top:475px">
+    <div style="position:absolute;left:114px;top:403px">
         <c:choose><c:when test="${privilege == 'admin'}"><h3 style="color:#666666">管理员</h3></c:when><c:otherwise><h3
                 style="color:#666666">用户</h3></c:otherwise></c:choose>
     </div>
     <c:if test="${privilege == 'admin'}">
-        <div style="position:absolute;left:540px;top:600px">
+        <div style="position:absolute;left:50px;top:540px">
             <a class="btn btn-primary" href="discase">查看所有病例</a>
         </div>
     </c:if>
     <c:if test="${privilege == 'admin'}">
-        <div style="position:absolute;left:650px;top:600px">
+        <div style="position:absolute;left:160px;top:540px">
             <a class="btn btn-success" href="newcase">新增病例</a>
         </div>
     </c:if>
 
 </div>
+    </div>
 
 </body>
 </html>

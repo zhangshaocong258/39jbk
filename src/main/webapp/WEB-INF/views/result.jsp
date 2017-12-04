@@ -16,27 +16,39 @@
     <script type="text/javascript" src="<c:url value='/static/js/bootstrap.min.js'/>"></script>
     <style>
         body {
-            background-image: url(<c:url value='/static/img/结果.png'/>);
-            background-size: 100%;
-            background-position: center;
-            background-repeat: no-repeat;
+            text-align: center
+        }
+    </style>
+    <style>
+        .box {
+            background: url("<c:url value='/static/img/结果s.png'/>");
+            width: 970px;
+            height: 785px;
+            /*display: table-cell;*/
+            /*!* 水平居中 *!*/
+            /*text-align:center;*/
+            /*!* 垂直居中 *!*/
+            /*vertical-align:middle;*/
+            position: relative;
+            /*border: 1px solid #f40;*/
         }
     </style>
 </head>
 <body>
-<div style="position:relative;left:0px;top:0px">
-    <div style="position:absolute;left:495px;top:78px">
+<div style="margin:0 auto; margin-top: 80px; width:970px">
+    <div class="box">
+    <div style="position:absolute;left:10px;top:5px">
         <a href="information"><img src=<c:url value='/static/img/返回.png'/>/></a>
     </div>
     <form class="form-horizontal" action="result" method="get">
-        <div style="position:absolute;left:575px;top:172px">
+        <div style="position:absolute;left:92px;top:100px">
             <select name="gender" value="${gender}" class="form-control" style="width:80px;">
                 <option<c:if test="${gender == 'male'}"> selected = "selected"</c:if>>男</option>
                 <option<c:if test="${gender == 'female'}"> selected = "selected"</c:if>>女</option>
             </select>
         </div>
 
-        <div style="position:absolute;left:740px;top:172px">
+        <div style="position:absolute;left:255px;top:100px">
             <select name="age" class="form-control" style="width:160px;">
                 <option<c:if test="${age == '未选择'}"> selected = "selected"</c:if>>未选择</option>
                 <option<c:if test="${age == '1岁'}"> selected = "selected"</c:if>>1岁</option>
@@ -142,7 +154,7 @@
         </div>
 
 
-        <div style="position:absolute;left:975px;top:172px">
+        <div style="position:absolute;left:488px;top:100px">
             <select name="profession" value="${profession}" class="form-control" style="width:213px;">
                 <option<c:if test="${profession == '未选择'}"> selected = "selected"</c:if>>未选择</option>
                 <option<c:if test="${profession == '工人'}"> selected = "selected"</c:if>>工人</option>
@@ -159,7 +171,7 @@
             </select>
         </div>
 
-        <div style="overflow:auto;position:absolute;left:488px;top:270px;width:220px;height:206px">
+        <div style="overflow:auto;position:absolute;left:3px;top:195px;width:220px;height:206px">
             <table class="table table-condensed">
                 <c:forEach items="${existZhengzhuangs}" var="existZhengzhuang" begin="0" end="0">
                     <tr>
@@ -174,7 +186,7 @@
             </table>
         </div>
 
-        <div style="overflow:auto;position:absolute;left:488px;top:510px;width:220px;height:340px">
+        <div style="overflow:auto;position:absolute;left:3px;top:437px;width:220px;height:340px">
             <table class="table table-condensed">
                 <c:forEach items="${inexistZhengzhuangs}" var="inexistZhengzhuang">
                     <tr>
@@ -196,7 +208,7 @@
             </c:forEach>
         </div>
 
-        <div style="position:absolute;left:750px;top:280px;width:450px;">
+        <div style="text-align: left;position:absolute;left:260px;top:205px;width:450px;">
             <c:forEach items="${results}" var="result">
                 <div class="row">
                     <h3><strong>${result.name}</strong></h3>
@@ -214,11 +226,11 @@
         </div>
 
 
-        <div style="position:absolute;left:630px;top:241px">
+        <div style="position:absolute;left:154px;top:168px">
             <button class="btn btn-primary btn-xs" type="submit">重新检查</button>
         </div>
 
-        <div class="dropdown" style="position:absolute;left:1380px;top:80px">
+        <div class="dropdown" style="position:absolute;right:0px;top: 6px">
             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="true">${user.userName}<span class="caret"></span></button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -230,6 +242,7 @@
         </div>
 
     </form>
+        </div>
 </div>
 
 </body>

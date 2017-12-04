@@ -16,10 +16,21 @@
     <script type="text/javascript" src="<c:url value='/static/js/bootstrap.min.js'/>"></script>
     <style>
         body {
-            background-image: url(<c:url value='/static/img/选择症状.png'/>);
-            background-size: 100%;
-            background-position: center;
-            background-repeat: no-repeat;
+            text-align: center
+        }
+    </style>
+    <style>
+        .box {
+            background: url("<c:url value='/static/img/选择症状s.png'/>");
+            width: 970px;
+            height: 785px;
+            /*display: table-cell;*/
+            /*!* 水平居中 *!*/
+            /*text-align:center;*/
+            /*!* 垂直居中 *!*/
+            /*vertical-align:middle;*/
+            position: relative;
+            /*border: 1px solid #f40;*/
         }
     </style>
     <script type="text/javascript">
@@ -69,19 +80,20 @@
     </script>
 </head>
 <body>
-<div style="position:relative;left:0px;top:0px">
-    <div style="position:absolute;left:495px;top:78px">
+<div style="margin:0 auto; margin-top: 80px; width:970px">
+    <div class="box">
+    <div style="position:absolute;left:10px;top:5px">
         <a href="information"><img src=<c:url value='/static/img/返回.png'/>/></a>
     </div>
     <form name="myform" class="form-horizontal" action="result" method="get" onsubmit="return submitTest()">
-        <div style="position:absolute;left:575px;top:172px">
+        <div style="position:absolute;left:92px;top:100px">
             <select name="gender" value="${gender}" class="form-control" style="width:80px;">
                 <option<c:if test="${gender == 'male'}"> selected = "selected"</c:if>>男</option>
                 <option<c:if test="${gender == 'female'}"> selected = "selected"</c:if>>女</option>
             </select>
         </div>
 
-        <div style="position:absolute;left:740px;top:172px">
+        <div style="position:absolute;left:255px;top:100px">
             <select name="age" class="form-control" style="width:160px;">
                 <option<c:if test="${age == '未选择'}"> selected = "selected"</c:if>>未选择</option>
                 <option<c:if test="${age == '1岁'}"> selected = "selected"</c:if>>1岁</option>
@@ -187,7 +199,7 @@
         </div>
 
 
-        <div style="position:absolute;left:975px;top:172px">
+        <div style="position:absolute;left:488px;top:100px">
             <select name="profession" value="${profession}" class="form-control" style="width:213px;">
                 <option<c:if test="${profession == '未选择'}"> selected = "selected"</c:if>>未选择</option>
                 <option<c:if test="${profession == '工人'}"> selected = "selected"</c:if>>工人</option>
@@ -204,7 +216,7 @@
             </select>
         </div>
 
-        <div style="position:absolute;left:575px;top:285px;width:658px;">
+        <div style="position:absolute;left:92px;top:220px;width:655px;">
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
@@ -701,11 +713,11 @@
         </div>
 
 
-        <div style="position:absolute;left:575px;top:755px">
+        <div style="position:absolute;left:92px;top:690px">
             <button class="btn btn-primary" type="submit">开始检查</button>
         </div>
 
-        <div class="dropdown" style="position:absolute;left:1380px;top:80px">
+        <div class="dropdown" style="position:absolute;right:0px;top: 6px">
             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="true">${user.userName}<span class="caret"></span></button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -718,6 +730,7 @@
 
     </form>
 </div>
+    </div>
 
 </body>
 </html>
