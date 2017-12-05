@@ -40,10 +40,10 @@ public class MyController {
 
     @ResponseBody
     @RequestMapping("/add")
-    public String add(  @RequestParam("info") String info,
-                        @RequestParam("medicalHis") String medicalHis,
-                        @RequestParam("examine") String examine,
-                        @RequestParam("disease") String disease) {
+    public String add(@RequestParam("info") String info,
+                      @RequestParam("medicalHis") String medicalHis,
+                      @RequestParam("examine") String examine,
+                      @RequestParam("disease") String disease) {
         System.out.println("进入addd");
         Discase discase = new Discase(1, info, medicalHis, examine, disease);
         myService.insertDiscase(discase);
@@ -58,13 +58,13 @@ public class MyController {
 
     @ResponseBody
     @RequestMapping("/selectTest")
-    public String  selectTest( @RequestParam(value = "gender") String gender,
-                               @RequestParam(value = "age") String age,
-                               @RequestParam(value = "profession") String profession,
-                               @RequestParam(value = "zhengzhuang") String[] zhengzhuang,
-                               @RequestParam(value = "shezhi") String[] shezhi,
-                               @RequestParam(value = "shetai") String[] shetai,
-                               @RequestParam(value = "mai") String[] mai) {
+    public String selectTest(@RequestParam(value = "gender") String gender,
+                             @RequestParam(value = "age") String age,
+                             @RequestParam(value = "profession") String profession,
+                             @RequestParam(value = "zhengzhuang") String[] zhengzhuang,
+                             @RequestParam(value = "shezhi") String[] shezhi,
+                             @RequestParam(value = "shetai") String[] shetai,
+                             @RequestParam(value = "mai") String[] mai) {
         System.out.println("进入ssssss" + zhengzhuang.length);
         if (zhengzhuang.length == 0) {
             return "zhengzhuang";
@@ -82,6 +82,7 @@ public class MyController {
 
     /**
      * 必须要有@ResponseBody
+     *
      * @return
      */
     @ResponseBody
@@ -103,6 +104,7 @@ public class MyController {
     @ResponseBody
     @RequestMapping(value = "/discaseAjax", produces = {"text/html;charset=UTF-8;"})
     public String discaseAjax() {
+        System.out.println("discaseAjax");
         List<Discase> discaseList = myService.selectAllDiscase();
         int size = discaseList.size();
         JSONArray jsonArray = new JSONArray();
@@ -132,6 +134,7 @@ public class MyController {
     /**
      * 进行修改或者删除
      * 修改后用于重定向，隐藏id，以便修改
+     *
      * @param request
      * @param id
      * @param act
@@ -158,8 +161,47 @@ public class MyController {
         return "redirect:/discase";
     }
 
+
+    @ResponseBody
+    @RequestMapping("/delAjax")
+    public String delAjax(HttpServletRequest request,
+                          @RequestParam("id") int id,
+                          @RequestParam("info") String info,
+                          @RequestParam("medicalHis") String medicalHis,
+                          @RequestParam("examine") String examine,
+                          @RequestParam("disease") String disease
+    ) {
+        System.out.println("delAjax " + id);
+        myService.deleteDiscaseById(id);
+
+        return "true";
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/editAjax")
+    public String editAjax(HttpServletRequest request,
+                           @RequestParam("id") int id,
+                           @RequestParam("info") String info,
+                           @RequestParam("medicalHis") String medicalHis,
+                           @RequestParam("examine") String examine,
+                           @RequestParam("disease") String disease
+    ) {
+
+        System.out.println("editAjax");
+        Discase discase = myService.selectDiscaseById(id);
+        discase.setInfo(info);
+        discase.setMedicalHis(medicalHis);
+        discase.setExamine(examine);
+        discase.setDisease(disease);
+        myService.updateDiscase(discase);
+
+        return "true";
+    }
+
     /**
      * 判断权限
+     *
      * @param request
      * @return
      */
@@ -199,6 +241,7 @@ public class MyController {
 
     /**
      * 用于判断用户名是否存在
+     *
      * @param username
      * @param password
      * @param confirmPassword
@@ -302,7 +345,7 @@ public class MyController {
 //            System.out.println("formatFile " + formatFile.getAbsolutePath());
 
 //            Repository.train(modelFile, trainFile, false);
-            results = Repository.predict(modelFile,tempFile,formatFile,zhengzhuangList, shezhiList, shetaiList, maiList);
+            results = Repository.predict(modelFile, tempFile, formatFile, zhengzhuangList, shezhiList, shetaiList, maiList);
             mav.addObject("results", results);
             mav.addObject("existZhengzhuangs", zhengzhuangList);
             mav.addObject("shezhis", shezhiList);
