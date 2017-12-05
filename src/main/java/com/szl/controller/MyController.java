@@ -296,6 +296,113 @@ public class MyController {
         return mav;
     }
 
+
+    @ResponseBody
+    @RequestMapping("/resultAjax")
+    public String resultAjax(@RequestParam(value = "zhengzhuang") String[] zhengzhuang,
+                                   @RequestParam(value = "shezhi") String[] shezhi,
+                                   @RequestParam(value = "shetai") String[] shetai,
+                                   @RequestParam(value = "mai") String[] mai) {
+        JSONArray jsonArray = new JSONArray();
+        try {
+            Set<WordEntry> queryResult = new HashSet<WordEntry>();
+            List<String> zhengzhuangList2 = new ArrayList<String>();
+            Set<String> zhengzhuangList2Set = new HashSet<String>();
+            List<String> zhengzhuangList = Arrays.asList(zhengzhuang);
+            List<String> shezhiList = Arrays.asList(shezhi);
+            List<String> shetaiList = Arrays.asList(shetai);
+            List<String> maiList = Arrays.asList(mai);
+            File modelFile = new File(MyController.class.getClassLoader().getResource("../../model/xinglinyuan.model").getPath());
+            File tempFile = new File(MyController.class.getClassLoader().getResource("../../model/temp.arff").getPath());
+            File formatFile = new File(MyController.class.getClassLoader().getResource("../../model/format.arff").getPath());
+
+            List<DiseaseInf> results = new ArrayList<DiseaseInf>();
+            results = Repository.predict(modelFile, tempFile, formatFile, zhengzhuangList, shezhiList, shetaiList, maiList);
+            JSONObject resultJson = new JSONObject();
+            JSONObject resultJsonPar = new JSONObject();
+            for (int i = 0; i < results.size(); i++) {
+                JSONObject temp = new JSONObject();
+                temp.put("name", results.get(i).getName());
+                temp.put("description", results.get(i).getDescription());
+                temp.put("pro", results.get(i).getPro());
+                resultJson.put("results" + i, temp);
+            }
+            resultJsonPar.put("results", resultJson);
+            jsonArray.put(resultJsonPar);
+
+
+            JSONObject zhengzhuangJson = new JSONObject();
+            JSONObject zhengzhuangJsonPar = new JSONObject();
+            for (int i = 0; i < zhengzhuangList.size(); i++) {
+                zhengzhuangJson.put("existZhengzhuangs" + i, zhengzhuangList.get(i));
+            }
+            zhengzhuangJsonPar.put("existZhengzhuangs", zhengzhuangJson);
+            jsonArray.put(zhengzhuangJsonPar);
+            
+            
+
+            JSONObject shezhiJson = new JSONObject();
+            JSONObject shezhiJsonPar = new JSONObject();
+            for (int i = 0; i < shezhiList.size(); i++) {
+                shezhiJson.put("shezhis" + i, shetaiList.get(i));
+            }
+            shezhiJsonPar.put("shezhis", shezhiJson);
+            jsonArray.put(shezhiJsonPar);
+
+
+            JSONObject shetaiJson = new JSONObject();
+            JSONObject shetaiJsonPar = new JSONObject();
+            for (int i = 0; i < shetaiList.size(); i++) {
+                shezhiJson.put("shetais" + i, shetaiList.get(i));
+            }
+            shezhiJsonPar.put("shetais", shetaiJson);
+            jsonArray.put(shetaiJsonPar);
+
+
+            JSONObject maiJson = new JSONObject();
+            JSONObject maiJsonPar = new JSONObject();
+            for (int i = 0; i < maiList.size(); i++) {
+                shezhiJson.put("mais" + i, maiList.get(i));
+            }
+            shezhiJsonPar.put("mais", maiJson);
+            jsonArray.put(maiJsonPar);
+
+
+            Set<String> zhengzhuangList1Set = new HashSet<String>();
+            zhengzhuangList1Set.addAll(zhengzhuangList);
+
+            //添加相关症状
+            for (String str : zhengzhuangList) {
+                queryResult = myService.distance(str);
+                int count = 10;
+                for (WordEntry disease : queryResult) {
+                    count--;
+                    if (count > 0) {
+                        if (!zhengzhuangList1Set.contains(disease.name)) {
+                            zhengzhuangList2Set.add(disease.name);
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            }
+            zhengzhuangList2.addAll(zhengzhuangList2Set);
+//            mav.addObject("inexistZhengzhuangs", zhengzhuangList2);
+
+            JSONObject zhengzhuang2Json = new JSONObject();
+            JSONObject zhengzhuang2JsonPar = new JSONObject();
+            for (int i = 0; i < zhengzhuangList2.size(); i++) {
+                zhengzhuangJson.put("inexistZhengzhuangs" + i, zhengzhuangList2.get(i));
+            }
+            zhengzhuangJsonPar.put("inexistZhengzhuangs", zhengzhuang2Json);
+            jsonArray.put(zhengzhuang2JsonPar);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jsonArray.toString();
+    }
+
     @RequestMapping("/result")
     public ModelAndView result(HttpServletRequest request, HttpServletResponse response,
                                @RequestParam(value = "gender") String gender,
