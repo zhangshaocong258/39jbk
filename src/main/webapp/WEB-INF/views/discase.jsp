@@ -44,64 +44,68 @@
                             "<input style='width: 500px' type='text' name='medicalHis' value= '" + obj['medicalHis'] + "'><br>" +
                             "<input style='width: 500px' type='text' name='examine' value='" + obj['examine'] + "'><br>" +
                             "<input style='width: 200px' type='text' name='disease' value='" + obj['disease'] + "'><br>" +
-                            "<button class='btn btn-primary' type='button' onclick='edit(this)'>修改</button>" +
-                            "<button class='btn btn-danger' type='button' onclick='del(this)'>删除</button></td></tr>");
+                            "<button class='btn btn-primary' type='button' value='edit' onclick='handler(this)'>修改</button>" +
+                            "<button class='btn btn-danger' type='button' value='del' onclick='handler(this)'>删除</button></td></tr>");
                 });
             }, "json");
         });
 
-        function edit(obj) {
+        function handler(obj) {
             var par = obj.parentNode;
             var tagElements = par.getElementsByTagName('input');
-            $.get("editAjax", {
+            var actValue = obj.value;
+            $.get("handler", {
                 id: tagElements[0].value, info: tagElements[1].value, medicalHis: tagElements[2].value,
-                examine: tagElements[3].value, disease: tagElements[4].value
-            }, function (data) {
-                if (data == "true") {
+                examine: tagElements[3].value, disease: tagElements[4].value, act: actValue
+            }, function (type) {
+                $("#result").html("");
+                $.get("discaseAjax", null, function (data) {
+                    $.each(data, function (index, obj) {
+                        $("#result").append(
+                                "<tr><td><input type='hidden' name='id' value='" + obj['id'] + "'>" +
+                                "<input style='width: 200px' type='text' name='info' value='" + obj['info'] + "'><br>" +
+                                "<input style='width: 500px' type='text' name='medicalHis' value= '" + obj['medicalHis'] + "'><br>" +
+                                "<input style='width: 500px' type='text' name='examine' value='" + obj['examine'] + "'><br>" +
+                                "<input style='width: 200px' type='text' name='disease' value='" + obj['disease'] + "'><br>" +
+                                "<button class='btn btn-primary' type='button' value='edit' onclick='handler(this)'>修改</button>" +
+                                "<button class='btn btn-danger' type='button' value='del' onclick='handler(this)'>删除</button></td></tr>");
+                    });
+
+                }, "json");
+                if (type == "edit") {
                     alert("修改成功");
-                    $("#result").html("");
-                    $.get("discaseAjax", null, function (data) {
-                        $.each(data, function (index, obj) {
-                            $("#result").append(
-                                    "<tr><td><input type='hidden' name='id' value='" + obj['id'] + "'>" +
-                                    "<input style='width: 200px' type='text' name='info' value='" + obj['info'] + "'><br>" +
-                                    "<input style='width: 500px' type='text' name='medicalHis' value= '" + obj['medicalHis'] + "'><br>" +
-                                    "<input style='width: 500px' type='text' name='examine' value='" + obj['examine'] + "'><br>" +
-                                    "<input style='width: 200px' type='text' name='disease' value='" + obj['disease'] + "'><br>" +
-                                    "<button class='btn btn-primary' type='button' onclick='edit(this)'>修改</button>" +
-                                    "<button class='btn btn-danger' type='button' onclick='del(this)'>删除</button></td></tr>");
-                        });
-                    }, "json");
-                }
-            });
-        }
-
-
-        function del(obj) {
-            var par = obj.parentNode;
-            var tagElements = par.getElementsByTagName('input');
-            $.get("delAjax", {
-                id: tagElements[0].value, info: tagElements[1].value, medicalHis: tagElements[2].value,
-                examine: tagElements[3].value, disease: tagElements[4].value
-            }, function (data) {
-                if (data == "true") {
+                } else {
                     alert("删除成功");
-                    $("#result").html("");
-                    $.get("discaseAjax", null, function (data) {
-                        $.each(data, function (index, obj) {
-                            $("#result").append(
-                                    "<tr><td><input type='hidden' name='id' value='" + obj['id'] + "'>" +
-                                    "<input style='width: 200px' type='text' name='info' value='" + obj['info'] + "'><br>" +
-                                    "<input style='width: 500px' type='text' name='medicalHis' value= '" + obj['medicalHis'] + "'><br>" +
-                                    "<input style='width: 500px' type='text' name='examine' value='" + obj['examine'] + "'><br>" +
-                                    "<input style='width: 200px' type='text' name='disease' value='" + obj['disease'] + "'><br>" +
-                                    "<button class='btn btn-primary' type='button' onclick='edit(this)'>修改</button>" +
-                                    "<button class='btn btn-danger' type='button' onclick='del(this)'>删除</button></td></tr>");
-                        });
-                    }, "json");
                 }
             });
         }
+
+
+//        function del(obj) {
+//            var par = obj.parentNode;
+//            var tagElements = par.getElementsByTagName('input');
+//            $.get("delAjax", {
+//                id: tagElements[0].value, info: tagElements[1].value, medicalHis: tagElements[2].value,
+//                examine: tagElements[3].value, disease: tagElements[4].value
+//            }, function (data) {
+//                if (data == "true") {
+//                    alert("删除成功");
+//                    $("#result").html("");
+//                    $.get("discaseAjax", null, function (data) {
+//                        $.each(data, function (index, obj) {
+//                            $("#result").append(
+//                                    "<tr><td><input type='hidden' name='id' value='" + obj['id'] + "'>" +
+//                                    "<input style='width: 200px' type='text' name='info' value='" + obj['info'] + "'><br>" +
+//                                    "<input style='width: 500px' type='text' name='medicalHis' value= '" + obj['medicalHis'] + "'><br>" +
+//                                    "<input style='width: 500px' type='text' name='examine' value='" + obj['examine'] + "'><br>" +
+//                                    "<input style='width: 200px' type='text' name='disease' value='" + obj['disease'] + "'><br>" +
+//                                    "<button class='btn btn-primary' type='button' onclick='edit(this)'>修改</button>" +
+//                                    "<button class='btn btn-danger' type='button' onclick='del(this)'>删除</button></td></tr>");
+//                        });
+//                    }, "json");
+//                }
+//            });
+//        }
 
 
         function doTrain() {

@@ -140,6 +140,7 @@ public class MyController {
      * @param act
      * @return
      */
+    @ResponseBody
     @RequestMapping("/handler")
     public String handler(HttpServletRequest request,
                           @RequestParam("id") int id,
@@ -155,49 +156,46 @@ public class MyController {
             discase.setExamine(examine);
             discase.setDisease(disease);
             myService.updateDiscase(discase);
-        } else if (act.equals("del")) {
+            return "edit";
+        } else {
             myService.deleteDiscaseById(id);
+            return "del";
         }
-        return "redirect:/discase";
+
     }
 
 
-    @ResponseBody
-    @RequestMapping("/delAjax")
-    public String delAjax(HttpServletRequest request,
-                          @RequestParam("id") int id,
-                          @RequestParam("info") String info,
-                          @RequestParam("medicalHis") String medicalHis,
-                          @RequestParam("examine") String examine,
-                          @RequestParam("disease") String disease
-    ) {
-        System.out.println("delAjax " + id);
-        myService.deleteDiscaseById(id);
-
-        return "true";
-    }
-
-
-    @ResponseBody
-    @RequestMapping("/editAjax")
-    public String editAjax(HttpServletRequest request,
-                           @RequestParam("id") int id,
-                           @RequestParam("info") String info,
-                           @RequestParam("medicalHis") String medicalHis,
-                           @RequestParam("examine") String examine,
-                           @RequestParam("disease") String disease
-    ) {
-
-        System.out.println("editAjax");
-        Discase discase = myService.selectDiscaseById(id);
-        discase.setInfo(info);
-        discase.setMedicalHis(medicalHis);
-        discase.setExamine(examine);
-        discase.setDisease(disease);
-        myService.updateDiscase(discase);
-
-        return "true";
-    }
+//    @ResponseBody
+//    @RequestMapping("/delAjax")
+//    public String delAjax(HttpServletRequest request,
+//                          @RequestParam("id") int id,
+//                          @RequestParam("info") String info,
+//                          @RequestParam("medicalHis") String medicalHis,
+//                          @RequestParam("examine") String examine,
+//                          @RequestParam("disease") String disease) {
+//        System.out.println("delAjax " + id);
+//        myService.deleteDiscaseById(id);
+//        return "true";
+//    }
+//
+//
+//    @ResponseBody
+//    @RequestMapping("/editAjax")
+//    public String editAjax(HttpServletRequest request,
+//                           @RequestParam("id") int id,
+//                           @RequestParam("info") String info,
+//                           @RequestParam("medicalHis") String medicalHis,
+//                           @RequestParam("examine") String examine,
+//                           @RequestParam("disease") String disease) {
+//        System.out.println("editAjax");
+//        Discase discase = myService.selectDiscaseById(id);
+//        discase.setInfo(info);
+//        discase.setMedicalHis(medicalHis);
+//        discase.setExamine(examine);
+//        discase.setDisease(disease);
+//        myService.updateDiscase(discase);
+//        return "true";
+//    }
 
     /**
      * 判断权限
