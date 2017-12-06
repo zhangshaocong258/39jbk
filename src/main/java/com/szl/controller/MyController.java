@@ -7,8 +7,8 @@ import com.szl.service.MyService;
 import com.szl.util.DiseaseInf;
 import com.szl.util.Repository;
 import com.szl.util.WordEntry;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -116,7 +116,7 @@ public class MyController {
             jsonObject.put("medicalHis", discase.getMedicalHis());
             jsonObject.put("examine", discase.getExamine());
             jsonObject.put("disease", discase.getDisease());
-            jsonArray.put(jsonObject);
+            jsonArray.add(jsonObject);
         }
         return jsonArray.toString();
     }
@@ -298,14 +298,14 @@ public class MyController {
 
 
     @ResponseBody
-    @RequestMapping("/resultAjax")
+    @RequestMapping(value = "/resultAjax", produces = {"text/html;charset=UTF-8;"})
     public String resultAjax(@RequestParam(value = "zhengzhuang") String[] zhengzhuang,
                                    @RequestParam(value = "shezhi") String[] shezhi,
                                    @RequestParam(value = "shetai") String[] shetai,
                                    @RequestParam(value = "mai") String[] mai) {
         JSONArray jsonArray = new JSONArray();
         try {
-            Set<WordEntry> queryResult = new HashSet<WordEntry>();
+            Set<WordEntry> queryResult;
             List<String> zhengzhuangList2 = new ArrayList<String>();
             Set<String> zhengzhuangList2Set = new HashSet<String>();
             List<String> zhengzhuangList = Arrays.asList(zhengzhuang);
@@ -325,10 +325,10 @@ public class MyController {
                 temp.put("name", results.get(i).getName());
                 temp.put("description", results.get(i).getDescription());
                 temp.put("pro", results.get(i).getPro());
-                resultJson.put("results" + i, temp);
+                resultJson.put("results" + String.valueOf(i), temp);
             }
             resultJsonPar.put("results", resultJson);
-            jsonArray.put(resultJsonPar);
+            jsonArray.add(resultJsonPar);
 
 
             JSONObject zhengzhuangJson = new JSONObject();
@@ -337,35 +337,35 @@ public class MyController {
                 zhengzhuangJson.put("existZhengzhuangs" + i, zhengzhuangList.get(i));
             }
             zhengzhuangJsonPar.put("existZhengzhuangs", zhengzhuangJson);
-            jsonArray.put(zhengzhuangJsonPar);
+            jsonArray.add(zhengzhuangJsonPar);
             
             
 
-            JSONObject shezhiJson = new JSONObject();
-            JSONObject shezhiJsonPar = new JSONObject();
-            for (int i = 0; i < shezhiList.size(); i++) {
-                shezhiJson.put("shezhis" + i, shetaiList.get(i));
-            }
-            shezhiJsonPar.put("shezhis", shezhiJson);
-            jsonArray.put(shezhiJsonPar);
-
-
-            JSONObject shetaiJson = new JSONObject();
-            JSONObject shetaiJsonPar = new JSONObject();
-            for (int i = 0; i < shetaiList.size(); i++) {
-                shezhiJson.put("shetais" + i, shetaiList.get(i));
-            }
-            shezhiJsonPar.put("shetais", shetaiJson);
-            jsonArray.put(shetaiJsonPar);
-
-
-            JSONObject maiJson = new JSONObject();
-            JSONObject maiJsonPar = new JSONObject();
-            for (int i = 0; i < maiList.size(); i++) {
-                shezhiJson.put("mais" + i, maiList.get(i));
-            }
-            shezhiJsonPar.put("mais", maiJson);
-            jsonArray.put(maiJsonPar);
+//            JSONObject shezhiJson = new JSONObject();
+//            JSONObject shezhiJsonPar = new JSONObject();
+//            for (int i = 0; i < shezhiList.size(); i++) {
+//                shezhiJson.put("shezhis" + i, shetaiList.get(i));
+//            }
+//            shezhiJsonPar.put("shezhis", shezhiJson);
+//            jsonArray.put(shezhiJsonPar);
+//
+//
+//            JSONObject shetaiJson = new JSONObject();
+//            JSONObject shetaiJsonPar = new JSONObject();
+//            for (int i = 0; i < shetaiList.size(); i++) {
+//                shezhiJson.put("shetais" + i, shetaiList.get(i));
+//            }
+//            shezhiJsonPar.put("shetais", shetaiJson);
+//            jsonArray.put(shetaiJsonPar);
+//
+//
+//            JSONObject maiJson = new JSONObject();
+//            JSONObject maiJsonPar = new JSONObject();
+//            for (int i = 0; i < maiList.size(); i++) {
+//                shezhiJson.put("mais" + i, maiList.get(i));
+//            }
+//            shezhiJsonPar.put("mais", maiJson);
+//            jsonArray.put(maiJsonPar);
 
 
             Set<String> zhengzhuangList1Set = new HashSet<String>();
@@ -392,10 +392,10 @@ public class MyController {
             JSONObject zhengzhuang2Json = new JSONObject();
             JSONObject zhengzhuang2JsonPar = new JSONObject();
             for (int i = 0; i < zhengzhuangList2.size(); i++) {
-                zhengzhuangJson.put("inexistZhengzhuangs" + i, zhengzhuangList2.get(i));
+                zhengzhuang2Json.put("inexistZhengzhuangs" + i, zhengzhuangList2.get(i));
             }
-            zhengzhuangJsonPar.put("inexistZhengzhuangs", zhengzhuang2Json);
-            jsonArray.put(zhengzhuang2JsonPar);
+            zhengzhuang2JsonPar.put("inexistZhengzhuangs", zhengzhuang2Json);
+            jsonArray.add(zhengzhuang2JsonPar);
 
         } catch (Exception e) {
             e.printStackTrace();
