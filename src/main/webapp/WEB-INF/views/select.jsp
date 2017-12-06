@@ -203,6 +203,8 @@
             <select name="profession" value="${profession}" class="form-control" style="width:213px;">
                 <option<c:if test="${profession == '未选择'}"> selected = "selected"</c:if>>未选择</option>
                 <option<c:if test="${profession == '工人'}"> selected = "selected"</c:if>>工人</option>
+                <option<c:if test="${profession == '学生'}"> selected = "selected"</c:if>>学生</option>
+                <option<c:if test="${profession == '工程师'}"> selected = "selected"</c:if>>工程师</option>
                 <option<c:if test="${profession == '教师'}"> selected = "selected"</c:if>>教师</option>
                 <option<c:if test="${profession == '农民'}"> selected = "selected"</c:if>>农民</option>
                 <option<c:if test="${profession == '服务员'}"> selected = "selected"</c:if>>服务员</option>

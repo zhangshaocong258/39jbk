@@ -52,10 +52,10 @@
                                      aria-hidden="true"/>&thinsp;退出</a></li>
         </ul>
     </div>
-    <div style="position:absolute;left:114px;top:153px">
+    <div style="position:absolute;left:114px;top:151px">
         <h3 style="color:#666666">${user.userName}</h3>
     </div>
-    <div style="position:absolute;left:114px;top:213px">
+    <div style="position:absolute;left:114px;top:211px">
         <h3 style="color:#666666">${user.realName}</h3>
     </div>
     <div style="position:absolute;left:114px;top:273px">
@@ -64,7 +64,7 @@
     <div style="position:absolute;left:114px;top:333px">
         <h3 style="color:#666666">${user.userAddr}</h3>
     </div>
-    <div style="position:absolute;left:114px;top:403px">
+    <div style="position:absolute;left:114px;top:400px">
         <c:choose><c:when test="${privilege == 'admin'}"><h3 style="color:#666666">管理员</h3></c:when><c:otherwise><h3
                 style="color:#666666">用户</h3></c:otherwise></c:choose>
     </div>

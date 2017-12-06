@@ -161,6 +161,8 @@
                 <select name="profession" class="form-control" style="width:213px;">
                     <option>未选择</option>
                     <option>工人</option>
+                    <option>学生</option>
+                    <option>工程师</option>
                     <option>教师</option>
                     <option>农民</option>
                     <option>服务员</option>
