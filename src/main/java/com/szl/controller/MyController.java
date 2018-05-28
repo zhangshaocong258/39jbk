@@ -379,7 +379,10 @@ public class MyController {
                     count--;
                     if (count > 0) {
                         if (!zhengzhuangList1Set.contains(disease.name)) {
-                            zhengzhuangList2Set.add(disease.name);
+                            if (!disease.name.equals("恶心")) {
+                                System.out.println(disease.name);
+                                zhengzhuangList2Set.add(disease.name);
+                            }
                         }
                     } else {
                         break;
@@ -467,8 +470,10 @@ public class MyController {
                     count--;
                     if (count > 0) {
                         if (!zhengzhuangList1Set.contains(disease.name)) {
-                            zhengzhuangList2Set.add(disease.name);
-                        }
+                            if (!disease.name.equals("恶心")) {
+                                System.out.println(disease.name);
+                                zhengzhuangList2Set.add(disease.name);
+                            }                        }
                     } else {
                         break;
                     }

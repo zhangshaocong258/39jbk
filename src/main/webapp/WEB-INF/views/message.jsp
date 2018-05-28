@@ -66,7 +66,7 @@
     </div>
     <div style="position:absolute;left:114px;top:400px">
         <c:choose><c:when test="${privilege == 'admin'}"><h3 style="color:#666666">管理员</h3></c:when><c:otherwise><h3
-                style="color:#666666">用户</h3></c:otherwise></c:choose>
+                style="color:#666666">普通用户</h3></c:otherwise></c:choose>
     </div>
     <c:if test="${privilege == 'admin'}">
         <div style="position:absolute;left:50px;top:540px">
